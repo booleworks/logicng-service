@@ -1,0 +1,17 @@
+syntax = "proto3";
+package substitution;
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message SubstitutionInput {
+    string formula = 1;
+    SubstitutionMap mapping = 2;
+}
+
+message SubstitutionMap {
+    repeated Substitution mapping = 1;
+}
+
+message Substitution {
+    string replace = 1;
+    string with = 2;
+}

@@ -2,7 +2,6 @@ package srv
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -41,7 +40,7 @@ func Run(ctx context.Context, cfg *config.Config) error {
 	}
 	go func() {
 		logger.Printf("listening on %s with sync timeout of %s\n", httpServer.Addr, cfg.SyncComputationTimout)
-		if err := httpServer.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			fmt.Fprintf(os.Stderr, "error listening and serving: %s\n", err)
 		}
 	}()

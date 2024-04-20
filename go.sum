@@ -12,6 +12,8 @@ github.com/booleworks/logicng-go v0.3.1-0.20240420122427-ecfbeab31380 h1:ZQw5vDF
 github.com/booleworks/logicng-go v0.3.1-0.20240420122427-ecfbeab31380/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
 github.com/booleworks/logicng-go v0.3.1-0.20240420133150-647e2e93286f h1:8oYJagjpTgOlEOrnPlSTJtgdQXMl5OML73yge2QDgPc=
 github.com/booleworks/logicng-go v0.3.1-0.20240420133150-647e2e93286f/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
+github.com/booleworks/logicng-go v0.3.1-0.20240420143847-8cb90b9587b9 h1:r7UnnLRohlwdBcudyxpcA/XQol3kdm5NpI2SFSKzJXg=
+github.com/booleworks/logicng-go v0.3.1-0.20240420143847-8cb90b9587b9/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/emirpasic/gods v1.18.1 h1:FXtiHYKDGKCW2KzwZKx0iC0PQmdlorYgdFG9jPXJ1Bc=

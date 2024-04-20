@@ -16,6 +16,7 @@ func addRoutes(
 	mux.Handle("POST /normalform/transformation/{nf}", computation.HandleNFTrans(cfg))
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
+	mux.Handle("POST /substitution/{subst}", computation.HandleSubstitution(cfg))
 
 	// Docs
 	mux.HandleFunc("GET /swagger/*",

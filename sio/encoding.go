@@ -28,7 +28,7 @@ func Unmarshal[T ServiceInput[T]](r *http.Request) (object T, sErr ServiceError)
 	default:
 		sErr = ErrUnsupportedContentType(ct)
 	}
-	if valErrs := object.Validate(); valErrs != nil {
+	if valErrs := object.Validate(); len(valErrs) > 0 {
 		sErr = ErrIllegalInput(fmt.Errorf(formatValidationErrors(valErrs)))
 	}
 	return
