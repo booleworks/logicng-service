@@ -1,0 +1,7 @@
+syntax = "proto3";
+package formulainput;
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message FormulaInput {
+    string formula = 1;
+}

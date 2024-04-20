@@ -1,0 +1,12 @@
+syntax = "proto3";
+package generic;
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message ComputationResult {
+    ComputationState state = 1;
+}
+
+message ComputationState {
+	bool success = 1;
+	string error = 2;
+}

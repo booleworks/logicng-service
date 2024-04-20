@@ -1,0 +1,20 @@
+# OS X
+.DS_Store
+
+# GoLand
+.idea
+
+# vim swap files
+*.swp
+
+# build
+logicng-service
+
+# docs
+docs/
+
+# air buildfiles
+tmp/
+
+# testfile
+test.buf

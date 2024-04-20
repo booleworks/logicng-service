@@ -1,0 +1,9 @@
+syntax = "proto3";
+package formularesult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message FormulaResult {
+    generic.ComputationState state = 1;
+    string formula = 2;
+}
