@@ -17,6 +17,7 @@ func addRoutes(
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
 	mux.Handle("POST /substitution/{subst}", computation.HandleSubstitution(cfg))
+	mux.Handle("GET /randomizer/{rand}", computation.HandleRandomizer(cfg))
 
 	// Docs
 	mux.HandleFunc("GET /swagger/*",
