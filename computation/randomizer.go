@@ -22,7 +22,7 @@ import (
 // @Router       /randomizer/{fsort} [get]
 func HandleRandomizer(cfg *config.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		randCfg, ok := extractConfig(w, r)
+		randCfg, ok := extractRandConfig(w, r)
 		if !ok {
 			return
 		}
@@ -74,7 +74,7 @@ func HandleRandomizer(cfg *config.Config) http.Handler {
 	})
 }
 
-func extractConfig(w http.ResponseWriter, r *http.Request) (*randomizer.Config, bool) {
+func extractRandConfig(w http.ResponseWriter, r *http.Request) (*randomizer.Config, bool) {
 	seed := r.URL.Query().Get("seed")
 	numVars := r.URL.Query().Get("vars")
 	randCfg := randomizer.DefaultConfig()

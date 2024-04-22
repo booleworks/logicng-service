@@ -8,9 +8,7 @@
   - [ ] mermaid / graphviz output
 - [ ] DNNF
   - compile
-- [ ] encoding
-  - [ ] CC encoding (non incremental)
-  - [ ] PBC encoding (non incremental)
+- [x] encoding
 - [ ] explanation
   - [ ] MUS
   - [ ] SMUS
