@@ -72,7 +72,6 @@ func handleSubstVariable(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			return
 		}
-		fmt.Printf("Subst %s with %s\n", replace.Sprint(fac), with.Sprint(fac))
 		subst.AddVar(formula.Variable(replace), with)
 	}
 

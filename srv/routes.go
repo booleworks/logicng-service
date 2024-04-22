@@ -13,11 +13,13 @@ func addRoutes(
 	mux *http.ServeMux,
 	cfg *config.Config,
 ) {
+	mux.Handle("POST /assignment/{ass}", computation.HandleAssignment(cfg))
+	mux.Handle("POST /encoding/{enc}", computation.HandleEncoding(cfg))
 	mux.Handle("POST /normalform/transformation/{nf}", computation.HandleNFTrans(cfg))
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
 	mux.Handle("POST /substitution/{subst}", computation.HandleSubstitution(cfg))
-	mux.Handle("POST /encoding/{enc}", computation.HandleEncoding(cfg))
+
 	mux.Handle("GET /randomizer/{rand}", computation.HandleRandomizer(cfg))
 
 	// Docs

@@ -1,8 +1,6 @@
 # Resources
 
-- [ ] assignment
-  - [ ] evaluation
-  - [ ] restriction
+- [x] assignment
 - [ ] BDD
   - [ ] compile with different orderings
   - [ ] mermaid / graphviz output
