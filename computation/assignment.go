@@ -26,7 +26,7 @@ func HandleAssignment(cfg *config.Config) http.Handler {
 // @Summary      Evaluates a formula with an assignment of variables
 // @Tags         Assignment
 // @Param        request body	sio.AssignmentInput true "Input formula and assignment"
-// @Success      200  {object}  sio.PredicateResult
+// @Success      200  {object}  sio.BoolResult
 // @Router       /assignment/evaluation [post]
 func handleEvaluation(w http.ResponseWriter, r *http.Request) {
 	input, err := sio.Unmarshal[sio.AssignmentInput](r)
@@ -41,7 +41,7 @@ func handleEvaluation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ass := extractAssignment(fac, input.Assignment)
-	sio.WritePredicateResult(w, r, assignment.Evaluate(fac, parsed, ass))
+	sio.WriteBoolResult(w, r, assignment.Evaluate(fac, parsed, ass))
 }
 
 // @Summary      Restricts a formula with an assignment of variables

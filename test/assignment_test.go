@@ -26,7 +26,7 @@ func TestAssignmentEvaluation(t *testing.T) {
 	`
 	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
 	assert.Nil(err)
-	validateJSONPredicateResult(t, response, true)
+	validateJSONBoolResult(t, response, true)
 
 	input = `
 	{
@@ -43,7 +43,7 @@ func TestAssignmentEvaluation(t *testing.T) {
 	`
 	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
 	assert.Nil(err)
-	validateJSONPredicateResult(t, response, false)
+	validateJSONBoolResult(t, response, false)
 }
 
 func TestAssignmentRestriction(t *testing.T) {

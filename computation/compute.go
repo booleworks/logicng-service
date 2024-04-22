@@ -56,5 +56,5 @@ func holds(
 		return
 	}
 	holds := predicate(fac, parsed)
-	sio.WritePredicateResult(w, r, holds)
+	sio.WriteBoolResult(w, r, holds)
 }

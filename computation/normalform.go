@@ -133,7 +133,7 @@ func handleNFTransAIG(w http.ResponseWriter, r *http.Request) {
 // @Tags         Normal Form
 // @Param        nf path string true "normal form" Enums(nnf, cnf, dnf, aig, minterm, maxterm)
 // @Param        request body	sio.FormulaInput true "Input Formula"
-// @Success      200  {object}  sio.PredicateResult
+// @Success      200  {object}  sio.BoolResult
 // @Router       /normalform/predicate/{nf} [post]
 func HandleNFPred(cfg *config.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

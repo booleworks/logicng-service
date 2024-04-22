@@ -127,14 +127,14 @@ func validateJSONFormulaResult(t *testing.T, response *http.Response, formula st
 	assert.Equal(t, formula, object.Formula)
 }
 
-func validateJSONPredicateResult(t *testing.T, response *http.Response, holds bool) {
+func validateJSONBoolResult(t *testing.T, response *http.Response, value bool) {
 	validateSuccess(t, response, "application/json")
-	var object sio.PredicateResult
+	var object sio.BoolResult
 	err := json.NewDecoder(response.Body).Decode(&object)
 	assert.Nil(t, err)
 	assert.True(t, object.State.Success)
 	assert.Empty(t, object.State.Error)
-	assert.Equal(t, holds, object.Holds)
+	assert.Equal(t, value, object.Value)
 }
 
 func validateSuccess(t *testing.T, response *http.Response, content string) {

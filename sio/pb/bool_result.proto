@@ -1,9 +1,9 @@
 syntax = "proto3";
-package predicateresult;
+package boolresult;
 import "generic.proto";
 option go_package = "github.com/booleworks/logicng-service/sio/pb";
 
-message PredicateResult {
+message BoolResult {
     generic.ComputationState state = 1;
-    bool holds = 2;
+    bool value = 2;
 }
