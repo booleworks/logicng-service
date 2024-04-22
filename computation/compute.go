@@ -7,19 +7,27 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
+func parseFormulaInput(w http.ResponseWriter, r *http.Request, fac formula.Factory) (formula.Formula, bool) {
+	input, err := sio.Unmarshal[sio.FormulaInput](r)
+	if err != nil {
+		sio.WriteError(w, r, err)
+		return 0, false
+	}
+
+	parsed, ok := parse(w, r, fac, input.Formula)
+	if !ok {
+		return 0, false
+	}
+	return parsed, true
+}
+
 func transform(
 	w http.ResponseWriter,
 	r *http.Request,
 	transformation func(formula.Factory, formula.Formula) (formula.Formula, sio.ServiceError),
 ) {
-	input, err := sio.Unmarshal[sio.FormulaInput](r)
-	if err != nil {
-		sio.WriteError(w, r, err)
-		return
-	}
-
 	fac := formula.NewFactory()
-	parsed, ok := parse(w, r, fac, input.Formula)
+	parsed, ok := parseFormulaInput(w, r, fac)
 	if !ok {
 		return
 	}

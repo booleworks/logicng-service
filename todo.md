@@ -11,16 +11,16 @@
   - [ ] MUS
   - [ ] SMUS
 - [ ] formula
-  - [ ] variables
-  - [ ] literals
+  - [x] variables
+  - [x] literals
   - [ ] mermaid / graphviz output
 - [ ] function
-  - [ ] depth of formula
-  - [ ] number of atoms
-  - [ ] number of nodes
-  - [ ] variable profile
-  - [ ] literal profile
-  - [ ] sub-formulas
+  - [x] depth of formula
+  - [x] number of atoms
+  - [x] number of nodes
+  - [x] variable profile
+  - [x] literal profile
+  - [x] sub-formulas
 - [ ] graph
   - [ ] constraint graph
   - [ ] strongly connected components

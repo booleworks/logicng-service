@@ -1,0 +1,9 @@
+syntax = "proto3";
+package stringsetresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message StringSetResult {
+    generic.ComputationState state = 1;
+    repeated string value = 2;
+}

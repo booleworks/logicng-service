@@ -1,0 +1,9 @@
+syntax = "proto3";
+package profileresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message ProfileResult {
+    generic.ComputationState state = 1;
+    map<string, int64> profile = 2;
+}
