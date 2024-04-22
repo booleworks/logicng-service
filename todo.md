@@ -14,13 +14,7 @@
   - [x] variables
   - [x] literals
   - [ ] mermaid / graphviz output
-- [ ] function
-  - [x] depth of formula
-  - [x] number of atoms
-  - [x] number of nodes
-  - [x] variable profile
-  - [x] literal profile
-  - [x] sub-formulas
+- [x] function
 - [ ] graph
   - [ ] constraint graph
   - [ ] strongly connected components

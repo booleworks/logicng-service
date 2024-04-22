@@ -1,0 +1,11 @@
+syntax = "proto3";
+package maxsatresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message MaxSatResult {
+    generic.ComputationState state = 1;
+    bool satisfiable = 2;
+    int64 optimum = 3;
+    repeated string model = 4;
+}
