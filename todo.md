@@ -1,0 +1,55 @@
+# Resources
+
+- [ ] assignment
+  - [ ] evaluation
+  - [ ] restriction
+- [ ] BDD
+  - [ ] compile with different orderings
+  - [ ] mermaid / graphviz output
+- [ ] DNNF
+  - compile
+- [ ] encoding
+  - [ ] CC encoding (non incremental)
+  - [ ] PBC encoding (non incremental)
+- [ ] explanation
+  - [ ] MUS
+  - [ ] SMUS
+- [ ] formula
+  - [ ] variables
+  - [ ] literals
+  - [ ] mermaid / graphviz output
+- [ ] function
+  - [ ] depth of formula
+  - [ ] number of atoms
+  - [ ] number of nodes
+  - [ ] variable profile
+  - [ ] literal profile
+  - [ ] sub-formulas
+- [ ] graph
+  - [ ] constraint graph
+  - [ ] strongly connected components
+  - [ ] mermaid / graphviz output
+- [x] graphical
+- [x] handler
+- [ ] io
+  - [ ] read dimacs
+  - [ ] write dimacs
+- [ ] maxsat
+  - [ ] optimize with different algorithms (result with model/optimum)
+- [ ] model
+  - [ ] counting
+  - [ ] enumeration
+- [x] normalform
+- [ ] np
+  - [ ] set cover
+- [x] parser
+- [ ] primeimplicant
+  - [ ] minimum implicant cover
+  - [ ] minimum prime implicant
+- [x] randomizer
+- [ ] sat
+  - [ ] solve with model / core
+  - [ ] backbone
+  - [ ] predicates sat/tautology/contradiction/implies/equivalence
+- [x] simplification
+- [x] transformation
