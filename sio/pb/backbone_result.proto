@@ -1,0 +1,12 @@
+syntax = "proto3";
+package bbresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message BackboneResult {
+    generic.ComputationState state = 1;
+    bool satisfiable = 2;
+    repeated string positive = 3;
+    repeated string negative = 4;
+    repeated string optional = 5;
+}

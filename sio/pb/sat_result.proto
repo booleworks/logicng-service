@@ -1,0 +1,11 @@
+syntax = "proto3";
+package satresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message SatResult {
+    generic.ComputationState state = 1;
+    bool satisfiable = 2;
+    repeated string model = 3;
+    repeated string unsatCore = 4;
+}

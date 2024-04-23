@@ -24,8 +24,7 @@
 - [ ] io
   - [ ] read dimacs
   - [ ] write dimacs
-- [ ] maxsat
-  - [ ] optimize with different algorithms (result with model/optimum)
+- [x] maxsat
 - [ ] model
   - [ ] counting
   - [ ] enumeration
@@ -38,8 +37,8 @@
   - [ ] minimum prime implicant
 - [x] randomizer
 - [ ] sat
-  - [ ] solve with model / core
-  - [ ] backbone
+  - [x] solve with model / core
+  - [x] backbone
   - [ ] predicates sat/tautology/contradiction/implies/equivalence
 - [x] simplification
 - [x] transformation

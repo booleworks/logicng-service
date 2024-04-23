@@ -24,7 +24,7 @@ func HandleMaxSat(cfg *config.Config) http.Handler {
 		if !ok {
 			return
 		}
-		if ok := fillSolver(w, r, fac, solver); !ok {
+		if ok := fillMaxSatSolver(w, r, fac, solver); !ok {
 			return
 		}
 		hdl := maxsat.HandlerWithTimeout(*handler.NewTimeoutWithDuration(cfg.SyncComputationTimout))
@@ -70,7 +70,7 @@ func extractMaxSatSolver(w http.ResponseWriter, r *http.Request, fac formula.Fac
 	return solver, true
 }
 
-func fillSolver(w http.ResponseWriter, r *http.Request, fac formula.Factory, solver *maxsat.Solver) bool {
+func fillMaxSatSolver(w http.ResponseWriter, r *http.Request, fac formula.Factory, solver *maxsat.Solver) bool {
 	input, err := sio.Unmarshal[sio.MaxSatInput](r)
 	if err != nil {
 		sio.WriteError(w, r, err)
@@ -79,7 +79,7 @@ func fillSolver(w http.ResponseWriter, r *http.Request, fac formula.Factory, sol
 	for _, f := range input.HardFormulas {
 		parsed, ok := parse(w, r, fac, f)
 		if !ok {
-			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse hard clause '%s'", f)))
+			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse hard formula '%s'", f)))
 			return false
 		}
 		solver.AddHardFormula(parsed)
@@ -89,7 +89,7 @@ func fillSolver(w http.ResponseWriter, r *http.Request, fac formula.Factory, sol
 	for _, f := range input.SoftFormulas {
 		parsed, ok := parse(w, r, fac, f.Formula)
 		if !ok {
-			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse soft clause '%s'", f.Formula)))
+			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse soft formula '%s'", f.Formula)))
 			return false
 		}
 		if f.Weight > 1 {
