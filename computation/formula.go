@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/booleworks/logicng-go/formula"
-	"github.com/booleworks/logicng-go/function"
 	"github.com/booleworks/logicng-service/config"
 	"github.com/booleworks/logicng-service/sio"
 )
@@ -43,11 +42,11 @@ func HandleFormula(cfg *config.Config) http.Handler {
 // @Router       /formula/depth [post]
 func handleFormulaDepth(w http.ResponseWriter, r *http.Request) {
 	fac := formula.NewFactory()
-	formula, err := parseFormulaInput(w, r, fac)
+	form, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
 	}
-	sio.WriteIntResult(w, r, int64(function.FormulaDepth(fac, formula)))
+	sio.WriteIntResult(w, r, int64(formula.FormulaDepth(fac, form)))
 }
 
 // @Summary      Computes the number of atoms of a formula
@@ -57,11 +56,11 @@ func handleFormulaDepth(w http.ResponseWriter, r *http.Request) {
 // @Router       /formula/atoms [post]
 func handleFormulaAtoms(w http.ResponseWriter, r *http.Request) {
 	fac := formula.NewFactory()
-	formula, err := parseFormulaInput(w, r, fac)
+	form, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
 	}
-	sio.WriteIntResult(w, r, int64(function.NumberOfAtoms(fac, formula)))
+	sio.WriteIntResult(w, r, int64(formula.NumberOfAtoms(fac, form)))
 }
 
 // @Summary      Computes the number of nodes of a formula's DAG
@@ -71,11 +70,11 @@ func handleFormulaAtoms(w http.ResponseWriter, r *http.Request) {
 // @Router       /formula/nodes [post]
 func handleFormulaNodes(w http.ResponseWriter, r *http.Request) {
 	fac := formula.NewFactory()
-	formula, err := parseFormulaInput(w, r, fac)
+	form, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
 	}
-	sio.WriteIntResult(w, r, int64(function.NumberOfNodes(fac, formula)))
+	sio.WriteIntResult(w, r, int64(formula.NumberOfNodes(fac, form)))
 }
 
 // @Summary      Computes all variables of a formula
@@ -127,7 +126,7 @@ func handleFormulaSubFormulas(w http.ResponseWriter, r *http.Request) {
 	if !err {
 		return
 	}
-	sf := function.SubNodes(fac, f)
+	sf := formula.SubNodes(fac, f)
 	sfStrings := make([]string, len(sf))
 	for i, l := range sf {
 		sfStrings[i] = l.Sprint(fac)
@@ -146,7 +145,7 @@ func handleFormulaVarProfile(w http.ResponseWriter, r *http.Request) {
 	if !err {
 		return
 	}
-	pr := function.VariableProfile(fac, f)
+	pr := formula.VariableProfile(fac, f)
 	profile := make(map[string]int64, len(pr))
 	for k, v := range pr {
 		profile[k.Sprint(fac)] = int64(v)
@@ -165,7 +164,7 @@ func handleFormulaLitProfile(w http.ResponseWriter, r *http.Request) {
 	if !err {
 		return
 	}
-	pr := function.LiteralProfile(fac, f)
+	pr := formula.LiteralProfile(fac, f)
 	profile := make(map[string]int64, len(pr))
 	for k, v := range pr {
 		profile[k.Sprint(fac)] = int64(v)

@@ -3,7 +3,7 @@ module github.com/booleworks/logicng-service
 go 1.22.1
 
 require (
-	github.com/booleworks/logicng-go v0.3.1-0.20240422194456-082528331267
+	github.com/booleworks/logicng-go v0.3.1-0.20240423181114-94d9199f0e86
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/http-swagger/v2 v2.0.2
