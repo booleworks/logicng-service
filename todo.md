@@ -1,12 +1,10 @@
 # Resources
 
-- [x] assignment
 - [ ] BDD
   - [ ] compile with different orderings
   - [ ] mermaid / graphviz output
 - [ ] DNNF
-  - compile
-- [x] encoding
+  - [ ] compile
 - [ ] explanation
   - [ ] MUS
   - [ ] SMUS
@@ -14,31 +12,22 @@
   - [x] variables
   - [x] literals
   - [ ] mermaid / graphviz output
-- [x] function
 - [ ] graph
   - [ ] constraint graph
   - [ ] strongly connected components
   - [ ] mermaid / graphviz output
-- [x] graphical
-- [x] handler
 - [ ] io
   - [ ] read dimacs
   - [ ] write dimacs
-- [x] maxsat
 - [ ] model
-  - [ ] counting
+  - [x] counting
   - [ ] enumeration
-- [x] normalform
 - [ ] np
   - [ ] set cover
-- [x] parser
 - [ ] primeimplicant
   - [ ] minimum implicant cover
   - [ ] minimum prime implicant
-- [x] randomizer
 - [ ] sat
   - [x] solve with model / core
   - [x] backbone
   - [ ] predicates sat/tautology/contradiction/implies/equivalence
-- [x] simplification
-- [x] transformation

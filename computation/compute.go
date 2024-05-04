@@ -1,6 +1,7 @@
 package computation
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/booleworks/logicng-go/formula"
@@ -19,6 +20,24 @@ func parseFormulaInput(w http.ResponseWriter, r *http.Request, fac formula.Facto
 		return 0, false
 	}
 	return parsed, true
+}
+
+func parseFormulaSetInput(w http.ResponseWriter, r *http.Request, fac formula.Factory) ([]formula.Formula, bool) {
+	input, err := sio.Unmarshal[sio.FormulaSetInput](r)
+	if err != nil {
+		sio.WriteError(w, r, err)
+		return nil, false
+	}
+	formulas := make([]formula.Formula, len(input.Formulas))
+	for i, f := range input.Formulas {
+		parsed, ok := parse(w, r, fac, f)
+		if !ok {
+			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse formula '%s'", f)))
+			return nil, false
+		}
+		formulas[i] = parsed
+	}
+	return formulas, true
 }
 
 func transform(

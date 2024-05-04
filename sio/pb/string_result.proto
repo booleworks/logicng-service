@@ -1,0 +1,9 @@
+syntax = "proto3";
+package stringresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message StringResult {
+    generic.ComputationState state = 1;
+    string value = 2;
+}

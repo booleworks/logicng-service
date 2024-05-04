@@ -16,6 +16,7 @@ func addRoutes(
 	mux.Handle("POST /assignment/{ass}", computation.HandleAssignment(cfg))
 	mux.Handle("POST /encoding/{enc}", computation.HandleEncoding(cfg))
 	mux.Handle("POST /formula/{func}", computation.HandleFormula(cfg))
+	mux.Handle("POST /model/counting", computation.HandleModelCounting(cfg))
 	mux.Handle("POST /normalform/transformation/{nf}", computation.HandleNFTrans(cfg))
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
