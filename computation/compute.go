@@ -28,8 +28,12 @@ func parseFormulaSetInput(w http.ResponseWriter, r *http.Request, fac formula.Fa
 		sio.WriteError(w, r, err)
 		return nil, false
 	}
-	formulas := make([]formula.Formula, len(input.Formulas))
-	for i, f := range input.Formulas {
+	return parseFormulaSet(w, r, fac, input.Formulas)
+}
+
+func parseFormulaSet(w http.ResponseWriter, r *http.Request, fac formula.Factory, strings []string) ([]formula.Formula, bool) {
+	formulas := make([]formula.Formula, len(strings))
+	for i, f := range strings {
 		parsed, ok := parse(w, r, fac, f)
 		if !ok {
 			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse formula '%s'", f)))

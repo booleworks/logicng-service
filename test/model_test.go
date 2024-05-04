@@ -79,3 +79,33 @@ func TestModelCount(t *testing.T) {
 `
 	assert.Equal(expected, body)
 }
+
+func TestProjectedModelCount(t *testing.T) {
+	assert := assert.New(t)
+	ctx := runServer(t)
+	ep := endpoint("model/counting/projection")
+	input := `
+	{
+	  "formulas": [
+	    "~(A & B) => C | ~D",
+	    "~A | E"
+	  ],
+	  "variables": [
+	    "A",
+	    "C",
+	    "E"
+	  ]
+	}
+	`
+	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	body := extractJSONBody(response)
+	expected := `{
+  "state": {
+    "success": true
+  },
+  "value": "6"
+}
+`
+	assert.Equal(expected, body)
+}
