@@ -3,8 +3,6 @@
 - [ ] BDD
   - [ ] compile with different orderings
   - [ ] mermaid / graphviz output
-- [ ] DNNF
-  - [ ] compile
 - [ ] explanation
   - [ ] MUS
   - [ ] SMUS
