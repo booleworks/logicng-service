@@ -22,9 +22,6 @@
   - [ ] enumeration
 - [ ] np
   - [ ] set cover
-- [ ] primeimplicant
-  - [ ] minimum implicant cover
-  - [ ] minimum prime implicant
 - [ ] sat
   - [x] solve with model / core
   - [x] backbone

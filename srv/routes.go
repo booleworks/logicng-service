@@ -21,6 +21,8 @@ func addRoutes(
 	mux.Handle("POST /model/counting/projection", computation.HandleProjectedModelCounting(cfg))
 	mux.Handle("POST /normalform/transformation/{nf}", computation.HandleNFTrans(cfg))
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
+	mux.Handle("POST /prime/minimal-implicant", computation.HandleMinimalImplicant(cfg))
+	mux.Handle("POST /prime/minimal-cover", computation.HandleMinimalImplicantCover(cfg))
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
 	mux.Handle("POST /solver/maxsat", computation.HandleMaxSat(cfg))
 	mux.Handle("POST /solver/sat", computation.HandleSat(cfg))
