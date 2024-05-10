@@ -1,9 +1,0 @@
-syntax = "proto3";
-package formulasetresult;
-import "generic.proto";
-option go_package = "github.com/booleworks/logicng-service/sio/pb";
-
-message FormulaSetResult {
-    generic.ComputationState state = 1;
-    repeated string formulas = 2;
-}

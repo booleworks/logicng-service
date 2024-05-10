@@ -18,6 +18,7 @@ import (
 // @Param        depth query int false "Formula depth"
 // @Param        vars query int false "Number of variables"
 // @Param        seed query int false "Seed for the randomizer"
+// @Param        formulas query int false "Number of formulas to generate"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /randomizer/{fsort} [get]
 func HandleRandomizer(cfg *config.Config) http.Handler {
@@ -26,74 +27,89 @@ func HandleRandomizer(cfg *config.Config) http.Handler {
 		if !ok {
 			return
 		}
-		depth := 3
-		depthParam := r.URL.Query().Get("depth")
-		if depthParam != "" {
-			var err error
-			depth, err = strconv.Atoi(depthParam)
-			if err != nil {
-				sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("illegal depth value '%s'", depthParam)))
-				return
-			}
+		depth, ok := extractIntParam(w, r, "depth", 3)
+		if !ok {
+			return
 		}
+		numForms, ok := extractIntParam(w, r, "formulas", 1)
+		if !ok {
+			return
+		}
+
 		fac := formula.NewFactory()
 		randomizer := randomizer.New(fac, randCfg)
 		rand := r.PathValue("rand")
+
+		var randGen func() formula.Formula
 		switch rand {
 		case "const":
-			sio.WriteFormulaResult(w, r, randomizer.Constant().Sprint(fac))
+			randGen = randomizer.Constant
 		case "var":
-			sio.WriteFormulaResult(w, r, randomizer.Variable().Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Variable().AsFormula() }
 		case "lit":
-			sio.WriteFormulaResult(w, r, randomizer.Literal().Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Literal().AsFormula() }
 		case "atom":
-			sio.WriteFormulaResult(w, r, randomizer.Atom().Sprint(fac))
+			randGen = randomizer.Atom
 		case "not":
-			sio.WriteFormulaResult(w, r, randomizer.Not(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Not(depth) }
 		case "impl":
-			sio.WriteFormulaResult(w, r, randomizer.Impl(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Impl(depth) }
 		case "equiv":
-			sio.WriteFormulaResult(w, r, randomizer.Equiv(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Equiv(depth) }
 		case "and":
-			sio.WriteFormulaResult(w, r, randomizer.And(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.And(depth) }
 		case "or":
-			sio.WriteFormulaResult(w, r, randomizer.Or(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Or(depth) }
 		case "cc":
-			sio.WriteFormulaResult(w, r, randomizer.CC().Sprint(fac))
+			randGen = randomizer.CC
 		case "amo":
-			sio.WriteFormulaResult(w, r, randomizer.AMO().Sprint(fac))
+			randGen = randomizer.AMO
 		case "exo":
-			sio.WriteFormulaResult(w, r, randomizer.EXO().Sprint(fac))
+			randGen = randomizer.EXO
 		case "pbc":
-			sio.WriteFormulaResult(w, r, randomizer.PBC().Sprint(fac))
+			randGen = randomizer.PBC
 		case "formula":
-			sio.WriteFormulaResult(w, r, randomizer.Formula(depth).Sprint(fac))
+			randGen = func() formula.Formula { return randomizer.Formula(depth) }
 		default:
 			sio.WriteError(w, r, sio.ErrUnknownPath(r.URL.Path))
+			return
 		}
+		res := make([]sio.Formula, numForms)
+		for i := 0; i < numForms; i++ {
+			res[i] = sio.Formula{Formula: randGen().Sprint(fac)}
+		}
+		sio.WriteFormulaResult(w, r, res...)
 	})
 }
 
 func extractRandConfig(w http.ResponseWriter, r *http.Request) (*randomizer.Config, bool) {
-	seed := r.URL.Query().Get("seed")
-	numVars := r.URL.Query().Get("vars")
 	randCfg := randomizer.DefaultConfig()
-	randCfg.Seed = time.Now().UnixMilli()
-	if seed != "" {
-		s, err := strconv.Atoi(seed)
-		if err != nil {
-			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("illegal seed value '%s'", seed)))
-			return nil, false
-		}
-		randCfg.Seed = int64(s)
+
+	seed, ok := extractIntParam(w, r, "seed", int(time.Now().UnixMilli()))
+	randCfg.Seed = int64(seed)
+	if !ok {
+		return nil, false
 	}
-	if numVars != "" {
-		n, err := strconv.Atoi(numVars)
-		if err != nil {
-			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("illegal num vars value '%s'", numVars)))
-			return nil, false
-		}
-		randCfg.NumVars = n
+	randCfg.Seed = int64(seed)
+
+	numVars, ok := extractIntParam(w, r, "vars", 25)
+	if !ok {
+		return nil, false
 	}
+	randCfg.NumVars = numVars
 	return randCfg, true
+}
+
+func extractIntParam(w http.ResponseWriter, r *http.Request, param string, def int) (int, bool) {
+	value := def
+	valueParam := r.URL.Query().Get(param)
+	if valueParam != "" {
+		var err error
+		value, err = strconv.Atoi(valueParam)
+		if err != nil {
+			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("illegal %s value '%s'", param, valueParam)))
+			return 0, false
+		}
+	}
+	return value, true
 }

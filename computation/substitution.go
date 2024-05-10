@@ -25,25 +25,40 @@ func HandleSubstitution(cfg *config.Config) http.Handler {
 }
 
 // @Summary      Replaces all variables in a formula with anonymous ones
+// @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Substitution
 // @Param        prefix query string false "Optional prefix for the new variables" default(v)
-// @Param        request body	sio.FormulaInput true "Input Formula"
+// @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /substitution/anonymization [post]
 func handleSubstAnonymization(w http.ResponseWriter, r *http.Request) {
-	transform(w, r, func(fac formula.Factory, form formula.Formula) (formula.Formula, sio.ServiceError) {
-		prefix := "v"
-		if pf := r.URL.Query().Get("prefix"); pf != "" {
-			prefix = pf
-		}
-		anon := transformation.NewAnonymizer(fac, prefix)
-		return anon.Anonymize(form), nil
-	})
+	input, err := sio.Unmarshal[sio.FormulaInput](r)
+	if err != nil {
+		sio.WriteError(w, r, err)
+		return
+	}
+
+	fac := formula.NewFactory()
+	ps, ok := parseProps(w, r, fac, input.Formulas)
+	if !ok {
+		return
+	}
+
+	prefix := "v"
+	if pf := r.URL.Query().Get("prefix"); pf != "" {
+		prefix = pf
+	}
+	anon := transformation.NewAnonymizer(fac, prefix)
+	trans := func(fac formula.Factory, p *formula.StandardProposition) (formula.Formula, sio.ServiceError) {
+		return anon.Anonymize(p.Formula()), nil
+	}
+	transformPropostions(w, r, fac, trans, ps)
 }
 
 // @Summary      Replaces variables in a formula by their given substitution formula
+// @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Substitution
-// @Param        request body	sio.SubstitutionInput true "Input Formula and Substitution"
+// @Param        request body	sio.SubstitutionInput true "Input formulas and Substitution"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /substitution/variables [post]
 func handleSubstVariable(w http.ResponseWriter, r *http.Request) {
@@ -54,31 +69,46 @@ func handleSubstVariable(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fac := formula.NewFactory()
-	parsed, ok := parse(w, r, fac, input.Formula)
+	ps, ok := parseProps(w, r, fac, input.Formulas)
 	if !ok {
 		return
 	}
+
+	subst, ok := extractSubst(w, r, fac, input.Substitution)
+	if !ok {
+		return
+	}
+	trans := func(fac formula.Factory, p *formula.StandardProposition) (formula.Formula, sio.ServiceError) {
+		res, err := transformation.Substitute(fac, p.Formula(), subst)
+		if err != nil {
+			return 0, sio.ErrIllegalInput(err)
+		}
+		return res, nil
+	}
+	transformPropostions(w, r, fac, trans, ps)
+}
+
+func extractSubst(
+	w http.ResponseWriter,
+	r *http.Request,
+	fac formula.Factory,
+	input map[string]string,
+) (*transformation.Substitution, bool) {
 	subst := transformation.NewSubstitution()
-	for _, s := range input.Substitution.Mapping {
-		replace, ok := parse(w, r, fac, s.Replace)
+	for v, s := range input {
+		replace, ok := parse(w, r, fac, sio.Formula{Formula: v})
 		if !ok {
-			return
+			return nil, false
 		}
 		if replace.Sort() != formula.SortLiteral || replace.IsNeg() {
 			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("replace must be a single variable")))
-			return
+			return nil, false
 		}
-		with, ok := parse(w, r, fac, s.With)
+		with, ok := parse(w, r, fac, sio.Formula{Formula: s})
 		if !ok {
-			return
+			return nil, false
 		}
 		subst.AddVar(formula.Variable(replace), with)
 	}
-
-	substituted, substErr := transformation.Substitute(fac, parsed, subst)
-	if substErr == nil {
-		sio.WriteFormulaResult(w, r, substituted.Sprint(fac))
-	} else {
-		sio.WriteError(w, r, sio.ErrIllegalInput(substErr))
-	}
+	return subst, true
 }

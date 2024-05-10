@@ -14,10 +14,10 @@ func TestModelCount(t *testing.T) {
 	input := `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-	    "X | Y | Z",
-	    "P & Q => ~V1 | V2 | V"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "X | Y | Z"},
+	    {"formula": "P & Q => ~V1 | V2 | V"}
       ]
     }
 	`
@@ -37,10 +37,10 @@ func TestModelCount(t *testing.T) {
 	input = `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-	    "X | Y | Z",
-	    "P & Q => ~V1 | V2 | V"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "X | Y | Z"},
+	    {"formula": "P & Q => ~V1 | V2 | V"}
       ]
     }
 	`
@@ -60,10 +60,10 @@ func TestModelCount(t *testing.T) {
 	input = `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-	    "X | Y | Z",
-	    "P & Q => ~V1 | V2 | V"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "X | Y | Z"},
+	    {"formula": "P & Q => ~V1 | V2 | V"}
       ]
     }
 	`
@@ -87,8 +87,8 @@ func TestProjectedModelCount(t *testing.T) {
 	input := `
 	{
 	  "formulas": [
-	    "~(A & B) => C | ~D",
-	    "~A | E"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"}
 	  ],
 	  "variables": [
 	    "A",

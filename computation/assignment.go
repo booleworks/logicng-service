@@ -23,9 +23,10 @@ func HandleAssignment(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Evaluates a formula with an assignment of variables
+// @Summary      Evaluates formulas with an assignment of variables
+// @Description  Variables not in the assignment are assumed 'false'.  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Assignment
-// @Param        request body	sio.AssignmentInput true "Input formula and assignment"
+// @Param        request body	sio.AssignmentInput true "Input formulas and variable assignment"
 // @Success      200  {object}  sio.BoolResult
 // @Router       /assignment/evaluation [post]
 func handleEvaluation(w http.ResponseWriter, r *http.Request) {
@@ -36,17 +37,18 @@ func handleEvaluation(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fac := formula.NewFactory()
-	parsed, ok := parse(w, r, fac, input.Formula)
+	fs, ok := parseFormulas(w, r, fac, input.Formulas)
 	if !ok {
 		return
 	}
 	ass := extractAssignment(fac, input.Assignment)
-	sio.WriteBoolResult(w, r, assignment.Evaluate(fac, parsed, ass))
+	sio.WriteBoolResult(w, r, assignment.Evaluate(fac, fac.And(fs...), ass))
 }
 
-// @Summary      Restricts a formula with an assignment of variables
+// @Summary      Restricts formulas with an assignment of variables
+// @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Assignment
-// @Param        request body	sio.AssignmentInput true "Input formula and assignment"
+// @Param        request body	sio.AssignmentInput true "Input formulas and variable assignment"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /assignment/restriction [post]
 func handleRestriction(w http.ResponseWriter, r *http.Request) {
@@ -57,18 +59,22 @@ func handleRestriction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fac := formula.NewFactory()
-	parsed, ok := parse(w, r, fac, input.Formula)
+	ps, ok := parseProps(w, r, fac, input.Formulas)
 	if !ok {
 		return
 	}
 	ass := extractAssignment(fac, input.Assignment)
-	sio.WriteFormulaResult(w, r, assignment.Restrict(fac, parsed, ass).Sprint(fac))
+
+	trans := func(fac formula.Factory, p *formula.StandardProposition) (formula.Formula, sio.ServiceError) {
+		return assignment.Restrict(fac, p.Formula(), ass), nil
+	}
+	transformPropostions(w, r, fac, trans, ps)
 }
 
-func extractAssignment(fac formula.Factory, input sio.AssignmentMap) *assignment.Assignment {
+func extractAssignment(fac formula.Factory, input map[string]bool) *assignment.Assignment {
 	ass, _ := assignment.New(fac)
-	for _, a := range input.Mapping {
-		ass.AddLit(fac, fac.Lit(a.Variable, a.Value))
+	for v, b := range input {
+		ass.AddLit(fac, fac.Lit(v, b))
 	}
 	return ass
 }

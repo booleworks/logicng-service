@@ -14,9 +14,9 @@ func TestSatSatisfiable(t *testing.T) {
 	input := `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-        "A"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "A"}
       ]
     }
 	`
@@ -47,10 +47,10 @@ func TestSatUnsatisfiable(t *testing.T) {
 	input := `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-        "A",
-		"~E"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "A"},
+	    {"formula": "~E"}
       ]
     }
 	`
@@ -70,10 +70,10 @@ func TestSatUnsatisfiable(t *testing.T) {
 	input = `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E",
-        "A",
-		"~E"
+	    {"formula": "~(A & B) => C | ~D"},
+	    {"formula": "~A | E"},
+	    {"formula": "A"},
+	    {"formula": "~E"}
       ]
     }
 	`
@@ -86,9 +86,15 @@ func TestSatUnsatisfiable(t *testing.T) {
   },
   "satisfiable": false,
   "unsatCore": [
-    "~A | E",
-    "A",
-    "~E"
+    {
+      "formula": "~E"
+    },
+    {
+      "formula": "A"
+    },
+    {
+      "formula": "~A | E"
+    }
   ]
 }
 `
@@ -102,8 +108,10 @@ func TestSatBackbone(t *testing.T) {
 	input := `
     {
       "formulas": [
-        "~(A & B) => C | ~D",
-        "~A | E", "A", "~D"
+	    {"formula": "~(A & B) => C | ~D"},
+        {"formula": "~A | E"},
+	    {"formula": "A"},
+	    {"formula": "~D"}
     	  ]
     }
 	`

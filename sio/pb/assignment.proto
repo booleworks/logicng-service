@@ -1,17 +1,9 @@
 syntax = "proto3";
 package assignment;
+import "formula.proto";
 option go_package = "github.com/booleworks/logicng-service/sio/pb";
 
 message AssignmentInput {
-    string formula = 1;
-    AssignmentMap mapping = 2;
-}
-
-message AssignmentMap {
-    repeated Assignment mapping = 1;
-}
-
-message Assignment {
-    string variable = 1;
-    bool value = 2;
+    repeated formula.Formula formulas = 1;
+    map<string, bool> mapping = 2;
 }

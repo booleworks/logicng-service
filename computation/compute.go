@@ -10,16 +10,54 @@ import (
 func transform(
 	w http.ResponseWriter,
 	r *http.Request,
-	transformation func(formula.Factory, formula.Formula) (formula.Formula, sio.ServiceError),
+	transformation func(formula.Factory, []formula.Formula) (formula.Formula, sio.ServiceError),
 ) {
 	fac := formula.NewFactory()
-	parsed, ok := parseFormulaInput(w, r, fac)
+	fs, ok := parseFormulaInput(w, r, fac)
 	if !ok {
 		return
 	}
-	transformed, err := transformation(fac, parsed)
+	transformed, err := transformation(fac, fs)
 	if err == nil {
-		sio.WriteFormulaResult(w, r, transformed.Sprint(fac))
+		sio.WriteFormulaResult(w, r, sio.Formula{Formula: transformed.Sprint(fac)})
+	} else {
+		sio.WriteError(w, r, err)
+	}
+}
+
+func transformPerFormula(
+	w http.ResponseWriter,
+	r *http.Request,
+	transformation func(formula.Factory, *formula.StandardProposition) (formula.Formula, sio.ServiceError),
+) {
+	fac := formula.NewFactory()
+	ps, ok := parsePropInput(w, r, fac)
+	if !ok {
+		return
+	}
+	transformPropostions(w, r, fac, transformation, ps)
+}
+
+func transformPropostions(
+	w http.ResponseWriter,
+	r *http.Request,
+	fac formula.Factory,
+	transformation func(formula.Factory, *formula.StandardProposition) (formula.Formula, sio.ServiceError),
+	ps []*formula.StandardProposition,
+) {
+	result := make([]sio.Formula, len(ps))
+	var err sio.ServiceError
+	for i, p := range ps {
+		var transformed formula.Formula
+		transformed, err = transformation(fac, p)
+		if err != nil {
+			break
+		}
+		result[i] = sio.Formula{Formula: transformed.Sprint(fac), Description: p.Description}
+	}
+
+	if err == nil {
+		sio.WriteFormulaResult(w, r, result...)
 	} else {
 		sio.WriteError(w, r, err)
 	}
@@ -38,17 +76,11 @@ func holds(
 	r *http.Request,
 	predicate func(formula.Factory, formula.Formula) bool,
 ) {
-	input, err := sio.Unmarshal[sio.FormulaInput](r)
-	if err != nil {
-		sio.WriteError(w, r, err)
-		return
-	}
-
 	fac := formula.NewFactory()
-	parsed, ok := parse(w, r, fac, input.Formula)
+	formulas, ok := parseFormulaInput(w, r, fac)
 	if !ok {
 		return
 	}
-	holds := predicate(fac, parsed)
+	holds := predicate(fac, fac.And(formulas...))
 	sio.WriteBoolResult(w, r, holds)
 }

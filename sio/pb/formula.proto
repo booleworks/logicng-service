@@ -1,7 +1,8 @@
 syntax = "proto3";
-package formulasetinput;
+package formula;
 option go_package = "github.com/booleworks/logicng-service/sio/pb";
 
-message FormulaSetInput {
-    repeated string formulas = 1;
+message Formula {
+    string formula = 1;
+    string description = 2;
 }

@@ -1,13 +1,10 @@
 syntax = "proto3";
 package maxsatinput;
+import "formula.proto";
 option go_package = "github.com/booleworks/logicng-service/sio/pb";
 
 message MaxSatInput {
-    repeated string hardFormulas = 1;
-    repeated FormulaWithWeight softFormulas = 2;
+    repeated formula.Formula hardFormulas = 1;
+    map<string, int64> softFormulas = 2;
 }
 
-message FormulaWithWeight {
-	string formula = 1;
-	int64 weight = 2;
-}

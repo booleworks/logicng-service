@@ -10,30 +10,15 @@ import (
 var maxSatInput = `
 {
   "hardFormulas": [
-    "(A & B & ~X & ~D) | (B & C & ~A) | (C & ~D & X)"
+	{"formula": "(A & B & ~X & ~D) | (B & C & ~A) | (C & ~D & X)"}
   ],
-  "softFormulas": [
-    {
-      "formula": "A",
-      "weight": 2
-    },
-    {
-      "formula": "B",
-      "weight": 4
-    },
-    {
-      "formula": "C",
-      "weight": 8
-    },
-    {
-      "formula": "D",
-      "weight": 5
-    },
-    {
-      "formula": "X",
-      "weight": 7
-    }
-  ]
+  "softFormulas": {
+	"A": 2,
+	"B": 4,
+	"C": 8,
+	"D": 5,
+	"X": 7
+	}
 }
 `
 

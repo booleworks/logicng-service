@@ -97,11 +97,11 @@ func callService(
 }
 
 func jsonFormulaInput(formula string) string {
-	return fmt.Sprintf(`{"formula": "%s"}`, formula)
+	return fmt.Sprintf(`{"formulas": [{"formula": "%s"}]}`, formula)
 }
 
 func pbFormulaInput(formula string) []byte {
-	input := sio.FormulaInput{Formula: formula}
+	input := sio.FormulaInput{Formulas: []sio.Formula{{Formula: formula}}}
 	pb, _ := input.ProtoBuf()
 	return pb
 }
@@ -114,7 +114,7 @@ func validateProtoBufFormulaResult(t *testing.T, response *http.Response, formul
 	assert.Nil(t, err)
 	assert.True(t, object.State.Success)
 	assert.Empty(t, object.State.Error)
-	assert.Equal(t, formula, object.Formula)
+	assert.Equal(t, formula, object.Formulas[0].Formula)
 }
 
 func validateJSONFormulaResult(t *testing.T, response *http.Response, formula string) {
@@ -124,7 +124,7 @@ func validateJSONFormulaResult(t *testing.T, response *http.Response, formula st
 	assert.Nil(t, err)
 	assert.True(t, object.State.Success)
 	assert.Empty(t, object.State.Error)
-	assert.Equal(t, formula, object.Formula)
+	assert.Equal(t, formula, object.Formulas[0].Formula)
 }
 
 func validateJSONBoolResult(t *testing.T, response *http.Response, value bool) {

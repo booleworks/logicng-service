@@ -12,16 +12,16 @@ func TestAssignmentEvaluation(t *testing.T) {
 	ctx := runServer(t)
 	ep := endpoint("assignment/evaluation")
 	input := `
-	{
+    {
       "assignment": {
-        "mapping": [
-          {
-            "value": true,
-            "variable": "A"
-          }
-        ]
+        "A": true,
+        "B": false
       },
-      "formula": "~(A & B) => C | ~D"
+      "formulas": [
+        {
+          "formula": "~(A & B) => C | ~D"
+        }
+      ]
     }
 	`
 	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
@@ -29,16 +29,18 @@ func TestAssignmentEvaluation(t *testing.T) {
 	validateJSONBoolResult(t, response, true)
 
 	input = `
-	{
+    {
       "assignment": {
-        "mapping": [
-          {
-            "value": false,
-            "variable": "A"
-          }
-        ]
+        "A": true,
+        "B": false,
+        "C": false,
+        "D": true
       },
-      "formula": "~(A & B) => C | D"
+      "formulas": [
+        {
+          "formula": "~(A & B) => C | ~D"
+        }
+      ]
     }
 	`
 	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
@@ -51,16 +53,15 @@ func TestAssignmentRestriction(t *testing.T) {
 	ctx := runServer(t)
 	ep := endpoint("assignment/restriction")
 	input := `
-	{
+    {
       "assignment": {
-        "mapping": [
-          {
-            "value": true,
-            "variable": "A"
-          }
-        ]
-      },
-      "formula": "~(A & B) => C | ~D"
+        "A": true
+	  },
+      "formulas": [
+        {
+          "formula": "~(A & B) => C | ~D"
+        }
+      ]
     }
 	`
 	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
@@ -68,20 +69,16 @@ func TestAssignmentRestriction(t *testing.T) {
 	validateJSONFormulaResult(t, response, "~B => C | ~D")
 
 	input = `
-	{
+    {
       "assignment": {
-        "mapping": [
-          {
-            "value": true,
-            "variable": "A"
-          },
-	      {
-	        "value": false,
-	        "variable": "C"
-	      }
-        ]
+        "A": true,
+        "C": false
       },
-      "formula": "~(A & B) => C | ~D"
+      "formulas": [
+        {
+          "formula": "~(A & B) => C | ~D"
+        }
+      ]
     }
 	`
 	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
@@ -89,25 +86,17 @@ func TestAssignmentRestriction(t *testing.T) {
 	validateJSONFormulaResult(t, response, "~B => ~D")
 
 	input = `
-	{
+    {
       "assignment": {
-        "mapping": [
-          {
-            "value": true,
-            "variable": "A"
-          },
-	      {
-	        "value": false,
-	        "variable": "C"
-	      },
-	      {
-	        "value": false,
-	        "variable": "D"
-	      }
-
-        ]
+        "A": true,
+        "C": false,
+        "D": false
       },
-      "formula": "~(A & B) => C | ~D"
+      "formulas": [
+        {
+          "formula": "~(A & B) => C | ~D"
+        }
+      ]
     }
 	`
 	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)

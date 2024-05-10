@@ -16,17 +16,18 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Counts the models of a formula
+// @Summary      Counts the satisfying models of a formula
+// @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Model
 // @Param        algorithm query string  false "Counting Algorithm" Enums(bdd, dnnf, sat) Default(dnnf)
-// @Param        request body	sio.FormulaSetInput true "Formula set input"
+// @Param        request body	sio.FormulaInput true "Formula input"
 // @Success      200  {object}  sio.StringResult
 // @Router       /model/counting [post]
 func HandleModelCounting(cfg *config.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		algorithm := r.URL.Query().Get("algorithm")
 		fac := formula.NewFactory()
-		formulas, ok := parseFormulaSetInput(w, r, fac)
+		formulas, ok := parseFormulaInput(w, r, fac)
 		if !ok {
 			return
 		}
@@ -50,9 +51,10 @@ func HandleModelCounting(cfg *config.Config) http.Handler {
 }
 
 // @Summary      Counts the models of a formula projected to a set of variables
+// @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Model
 // @Param        algorithm query string  false "Counting Algorithm" Enums(sat) Default(sat)
-// @Param        request body	sio.FormulaSetVarsInput true "Formula set and variables input"
+// @Param        request body	sio.FormulaVarsInput true "Formulas and variables input"
 // @Success      200  {object}  sio.StringResult
 // @Router       /model/counting/projection [post]
 func HandleProjectedModelCounting(cfg *config.Config) http.Handler {
@@ -60,13 +62,13 @@ func HandleProjectedModelCounting(cfg *config.Config) http.Handler {
 		algorithm := r.URL.Query().Get("algorithm")
 		fac := formula.NewFactory()
 
-		input, err := sio.Unmarshal[sio.FormulaSetVarsInput](r)
+		input, err := sio.Unmarshal[sio.FormulaVarsInput](r)
 		if err != nil {
 			sio.WriteError(w, r, err)
 			return
 		}
 
-		formulas, ok := parseFormulaSet(w, r, fac, input.Formulas)
+		formulas, ok := parseFormulas(w, r, fac, input.Formulas)
 		if !ok {
 			return
 		}

@@ -86,20 +86,20 @@ func fillMaxSatSolver(w http.ResponseWriter, r *http.Request, fac formula.Factor
 	}
 	suppWeighted := solver.SupportsWeighted()
 	realWeighted := false
-	for _, f := range input.SoftFormulas {
-		parsed, ok := parse(w, r, fac, f.Formula)
+	for f, weight := range input.SoftFormulas {
+		parsed, ok := parse(w, r, fac, sio.Formula{Formula: f})
 		if !ok {
-			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse soft formula '%s'", f.Formula)))
+			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse soft formula '%s'", f)))
 			return false
 		}
-		if f.Weight > 1 {
+		if weight > 1 {
 			realWeighted = true
 		}
-		if f.Weight > 1 && !suppWeighted {
+		if weight > 1 && !suppWeighted {
 			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("algorithm does not support weighted instances")))
 			return false
 		}
-		solver.AddSoftFormula(parsed, int(f.Weight))
+		solver.AddSoftFormula(parsed, int(weight))
 	}
 	if !solver.SupportsUnweighted() && !realWeighted {
 		sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("algorithm does not support unweighted instances")))

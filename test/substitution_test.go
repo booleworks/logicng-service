@@ -33,18 +33,10 @@ func TestSubstVariables(t *testing.T) {
 	validateJSONFormulaResult(t, response, "~(A & B => ~C <=> D)")
 
 	input = `{
-      "formula": "~(A & B) => C <=> ~D",
+	  "formulas": [{"formula": "~(A & B) => C <=> ~D"}],
       "substitution": {
-        "mapping": [
-          {
-            "replace": "A",
-            "with": "X & ~Y"
-          },
-          {
-            "replace": "D",
-            "with": "~P"
-          }
-        ]
+	    "A": "X & ~Y",
+	    "D": "~P"
       }
 	}`
 	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)

@@ -31,12 +31,24 @@ func TestMinimalPrimeCover(t *testing.T) {
     "success": true
   },
   "formulas": [
-    "C & Y",
-    "C & X",
-    "~D & X",
-    "A & B & X",
-    "A & B & Y",
-    "~D & Y"
+    {
+      "formula": "C & Y"
+    },
+    {
+      "formula": "C & X"
+    },
+    {
+      "formula": "~D & X"
+    },
+    {
+      "formula": "A & B & X"
+    },
+    {
+      "formula": "A & B & Y"
+    },
+    {
+      "formula": "~D & Y"
+    }
   ]
 }
 `
@@ -52,12 +64,24 @@ func TestMinimalPrimeCover(t *testing.T) {
     "success": true
   },
   "formulas": [
-    "~D & Y",
-    "~D & X",
-    "C & Y",
-    "C & X",
-    "A & B & X",
-    "A & B & Y"
+    {
+      "formula": "~D & Y"
+    },
+    {
+      "formula": "~D & X"
+    },
+    {
+      "formula": "C & Y"
+    },
+    {
+      "formula": "C & X"
+    },
+    {
+      "formula": "A & B & X"
+    },
+    {
+      "formula": "A & B & Y"
+    }
   ]
 }
 `

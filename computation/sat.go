@@ -12,9 +12,10 @@ import (
 )
 
 // @Summary      Computes the satisfiability of a set of formulas with a SAT solver
+// @Description  If a list of formulas is given, the satisfiability is computed for the conjunction of these formulas.
 // @Tags         Solver
 // @Param        core query string  false "Compte an unsat core if unsatisfiable" Enums(false, true) Default(false)
-// @Param        request body	sio.FormulaSetInput true "SAT input"
+// @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.SatResult
 // @Router       /solver/sat [post]
 func HandleSat(cfg *config.Config) http.Handler {
@@ -47,12 +48,13 @@ func HandleSat(cfg *config.Config) http.Handler {
 					mdl[i] = l.Sprint(fac)
 				}
 			}
-			var unsatCore []string
+			var unsatCore []sio.Formula
 			if core && !result.Sat() {
 				props := result.UnsatCore().Propositions
-				unsatCore = make([]string, len(props))
+				unsatCore = make([]sio.Formula, len(props))
 				for i, p := range props {
-					unsatCore[i] = p.Formula().Sprint(fac)
+					prop := p.(*formula.StandardProposition)
+					unsatCore[i] = sio.Formula{Formula: p.Formula().Sprint(fac), Description: prop.Description}
 				}
 			}
 			sio.WriteSatResult(w, r, result.Sat(), mdl, unsatCore)
@@ -61,8 +63,9 @@ func HandleSat(cfg *config.Config) http.Handler {
 }
 
 // @Summary      Computes the backbone of a set of formulas
+// @Description  If a list of formulas is given, the backbone is computed for the conjunction of these formulas.
 // @Tags         Solver
-// @Param        request body	sio.FormulaSetInput true "formula set input"
+// @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.BackboneResult
 // @Router       /solver/backbone [post]
 func HandleSatBackbone(cfg *config.Config) http.Handler {
@@ -91,20 +94,19 @@ func HandleSatPredicate(cfg *config.Config) http.Handler {
 }
 
 func fillSatSolver(w http.ResponseWriter, r *http.Request, solver *sat.Solver) ([]formula.Variable, bool) {
-	input, err := sio.Unmarshal[sio.FormulaSetInput](r)
+	input, err := sio.Unmarshal[sio.FormulaInput](r)
 	if err != nil {
 		sio.WriteError(w, r, err)
 		return nil, false
 	}
 	varSet := formula.NewMutableVarSet()
-	for i, f := range input.Formulas {
-		parsed, ok := parse(w, r, solver.Factory(), f)
+	for _, f := range input.Formulas {
+		prop, ok := parseProp(w, r, solver.Factory(), f)
 		if !ok {
 			sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("could not parse formula '%s'", f)))
 			return nil, false
 		}
-		prop := formula.NewStandardProposition(parsed, fmt.Sprintf("formula %d", i))
-		varSet.AddAll(formula.Variables(solver.Factory(), parsed))
+		varSet.AddAll(formula.Variables(solver.Factory(), prop.Formula()))
 		solver.AddProposition(prop)
 	}
 	return varSet.Content(), true

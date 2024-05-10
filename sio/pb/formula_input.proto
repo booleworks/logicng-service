@@ -1,7 +1,8 @@
 syntax = "proto3";
 package formulainput;
+import "formula.proto";
 option go_package = "github.com/booleworks/logicng-service/sio/pb";
 
 message FormulaInput {
-    string formula = 1;
+    repeated formula.Formula formulas = 1;
 }

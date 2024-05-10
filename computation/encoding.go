@@ -24,16 +24,18 @@ func HandleEncoding(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Encodes a cardinality constraint to a CNF
+// @Summary      Encodes cardinality constraints to CNF
+// @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Encoding
 // @Param        algorithm query string false "Encoding algorithm" Enums(pure, ladder, bimander, commander, nested, binary, product, totalizer, mod_totalizer, cardinality_network)
-// @Param        request body	sio.FormulaInput true "Input Formula"
+// @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /encoding/cc [post]
 func handleEncodingCC(w http.ResponseWriter, r *http.Request) {
-	transform(w, r, func(fac formula.Factory, form formula.Formula) (formula.Formula, sio.ServiceError) {
+	transformPerFormula(w, r, func(fac formula.Factory, p *formula.StandardProposition) (formula.Formula, sio.ServiceError) {
+		form := p.Formula()
 		if form.Sort() != formula.SortCC {
-			return 0, sio.ErrIllegalInput(fmt.Errorf("input is not a cardinality constraint"))
+			return 0, sio.ErrIllegalInput(fmt.Errorf("input '%s' is not a cardinality constraint", form.Sprint(fac)))
 		}
 		encCfg, err := extractEncConfig(r)
 		if err != nil {
@@ -47,16 +49,18 @@ func handleEncodingCC(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// @Summary      Encodes a pseudo-Boolean constraint to a CNF
+// @Summary      Encodes pseudo-Boolean constraints to CNF
+// @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Encoding
 // @Param        algorithm query string false "Encoding algorithm" Enums(swc, binary_merge, adder_networks)
-// @Param        request body	sio.FormulaInput true "Input Formula"
+// @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /encoding/pbc [post]
 func handleEncodingPBC(w http.ResponseWriter, r *http.Request) {
-	transform(w, r, func(fac formula.Factory, form formula.Formula) (formula.Formula, sio.ServiceError) {
+	transformPerFormula(w, r, func(fac formula.Factory, p *formula.StandardProposition) (formula.Formula, sio.ServiceError) {
+		form := p.Formula()
 		if form.Sort() != formula.SortPBC {
-			return 0, sio.ErrIllegalInput(fmt.Errorf("input is not a pseudo-Boolean constraint"))
+			return 0, sio.ErrIllegalInput(fmt.Errorf("input '%s' is not a pseudo-Boolean constraint", form.Sprint(fac)))
 		}
 		encCfg, err := extractEncConfig(r)
 		if err != nil {
