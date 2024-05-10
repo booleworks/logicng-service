@@ -11,7 +11,7 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Computes the satisfiability of a set of formulas with a SAT solver
+// @Summary      Compute the satisfiability of a set of formulas with a SAT solver
 // @Description  If a list of formulas is given, the satisfiability is computed for the conjunction of these formulas.
 // @Tags         Solver
 // @Param        core query string  false "Compte an unsat core if unsatisfiable" Enums(false, true) Default(false)
@@ -62,7 +62,7 @@ func HandleSat(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Computes the backbone of a set of formulas
+// @Summary      Compute the backbone of a set of formulas
 // @Description  If a list of formulas is given, the backbone is computed for the conjunction of these formulas.
 // @Tags         Solver
 // @Param        request body	sio.FormulaInput true "Input formulas"

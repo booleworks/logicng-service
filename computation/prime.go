@@ -12,7 +12,7 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Computes a minimal prime implicant of a formula
+// @Summary      Compute a minimal prime implicant of a formula
 // @Description  If a list of formulas is given, the prime implicant is computed for the conjunction of these formulas.  The result always contains exactly one formula.
 // @Tags         Prime Implicant
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -35,7 +35,7 @@ func HandleMinimalImplicant(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Computes a minimal prime implicant cover of a formula
+// @Summary      Compute a minimal prime implicant cover of a formula
 // @Description  If a list of formulas is given, the prime implicant cover is computed for the conjunction of these formulas.
 // @Tags         Prime Implicant
 // @Param        algorithm query string  false "min or max models" Enums(min, max) Default(max)

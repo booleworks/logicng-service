@@ -12,7 +12,7 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Generates a random formula
+// @Summary      Generate a random formula
 // @Tags         Randomizer
 // @Param        fsort path string true "Formula sort to generate" Enums(const, var, lit, atom, not, impl, equiv, and, or, cc, amo, exo, pbc, formula) Default(formula)
 // @Param        depth query int false "Formula depth"

@@ -3,9 +3,6 @@
 - [ ] BDD
   - [ ] compile with different orderings
   - [ ] mermaid / graphviz output
-- [ ] explanation
-  - [ ] MUS
-  - [ ] SMUS
 - [ ] formula
   - [x] variables
   - [x] literals

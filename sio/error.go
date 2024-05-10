@@ -28,7 +28,7 @@ func ErrUnknownPath(path string) serviceError {
 }
 
 func ErrIllegalInput(err error) serviceError {
-	return serviceError{http.StatusBadRequest, fmt.Sprintf("illegal input: %s", err)}
+	return serviceError{http.StatusBadRequest, err.Error()}
 }
 
 func ErrTimeout() serviceError {

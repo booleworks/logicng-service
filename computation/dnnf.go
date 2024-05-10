@@ -10,7 +10,7 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Compiles formulas to DNNF
+// @Summary      Compile formulas to DNNF
 // @Description  If a list of formulas is given, the DNNF of the conjunction of these formulas is computed.  The result always contains exactly one formula.
 // @Tags         DNNF
 // @Param        request body	sio.FormulaInput true "Input formulas"

@@ -24,7 +24,7 @@ func HandleEncoding(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Encodes cardinality constraints to CNF
+// @Summary      Encode cardinality constraints to CNF
 // @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Encoding
 // @Param        algorithm query string false "Encoding algorithm" Enums(pure, ladder, bimander, commander, nested, binary, product, totalizer, mod_totalizer, cardinality_network)
@@ -49,7 +49,7 @@ func handleEncodingCC(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// @Summary      Encodes pseudo-Boolean constraints to CNF
+// @Summary      Encode pseudo-Boolean constraints to CNF
 // @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Encoding
 // @Param        algorithm query string false "Encoding algorithm" Enums(swc, binary_merge, adder_networks)

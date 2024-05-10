@@ -35,7 +35,7 @@ func HandleFormula(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Computes the depth of a formula's AST
+// @Summary      Compute the depth of a formula's AST
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -50,7 +50,7 @@ func handleFormulaDepth(w http.ResponseWriter, r *http.Request) {
 	sio.WriteIntResult(w, r, int64(formula.FormulaDepth(fac, fac.And(fs...))))
 }
 
-// @Summary      Computes the number of atoms of a formula
+// @Summary      Compute the number of atoms of a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -65,7 +65,7 @@ func handleFormulaAtoms(w http.ResponseWriter, r *http.Request) {
 	sio.WriteIntResult(w, r, int64(formula.NumberOfAtoms(fac, fac.And(fs...))))
 }
 
-// @Summary      Computes the number of nodes of a formula's DAG
+// @Summary      Compute the number of nodes of a formula's DAG
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -80,7 +80,7 @@ func handleFormulaNodes(w http.ResponseWriter, r *http.Request) {
 	sio.WriteIntResult(w, r, int64(formula.NumberOfNodes(fac, fac.And(fs...))))
 }
 
-// @Summary      Computes all variables of a formula
+// @Summary      Compute all variables of a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -100,7 +100,7 @@ func handleFormulaVariables(w http.ResponseWriter, r *http.Request) {
 	sio.WriteStringSetResult(w, r, varStrings)
 }
 
-// @Summary      Computes all literals of a formula
+// @Summary      Compute all literals of a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -120,7 +120,7 @@ func handleFormulaLiterals(w http.ResponseWriter, r *http.Request) {
 	sio.WriteStringSetResult(w, r, litStrings)
 }
 
-// @Summary      Computes all sub-formulas of a formula
+// @Summary      Compute all sub-formulas of a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -140,7 +140,7 @@ func handleFormulaSubFormulas(w http.ResponseWriter, r *http.Request) {
 	sio.WriteFormulaResult(w, r, result...)
 }
 
-// @Summary      Computes how often each variable occurrs in a formula
+// @Summary      Compute how often each variable occurrs in a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"
@@ -160,7 +160,7 @@ func handleFormulaVarProfile(w http.ResponseWriter, r *http.Request) {
 	sio.WriteProfileResult(w, r, profile)
 }
 
-// @Summary      Computes how often each literal occurrs in a formula
+// @Summary      Compute how often each literal occurrs in a formula
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        request body	sio.FormulaInput true "Input formulas"

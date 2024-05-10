@@ -11,7 +11,7 @@ import (
 	"github.com/booleworks/logicng-service/sio"
 )
 
-// @Summary      Solves a given set of hard and soft formulas with a MAX-SAT solver
+// @Summary      Solve a given set of hard and soft formulas with a MAX-SAT solver
 // @Tags         Solver
 // @Param        algorithm query string  false "MAX-SAT Algorithm" Enums(oll, msu3, wmsu3, linear-su, linear-us, wbo, inc-wbo)
 // @Param        request body	sio.MaxSatInput true "MAX-SAT input"

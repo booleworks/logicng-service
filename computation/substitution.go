@@ -24,7 +24,7 @@ func HandleSubstitution(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Replaces all variables in a formula with anonymous ones
+// @Summary      Replace all variables in a formula with anonymous ones
 // @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Substitution
 // @Param        prefix query string false "Optional prefix for the new variables" default(v)
@@ -55,7 +55,7 @@ func handleSubstAnonymization(w http.ResponseWriter, r *http.Request) {
 	transformPropostions(w, r, fac, trans, ps)
 }
 
-// @Summary      Replaces variables in a formula by their given substitution formula
+// @Summary      Replace variables in a formula by their given substitution formula
 // @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Substitution
 // @Param        request body	sio.SubstitutionInput true "Input formulas and Substitution"

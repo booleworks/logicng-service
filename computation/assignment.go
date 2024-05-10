@@ -23,7 +23,7 @@ func HandleAssignment(cfg *config.Config) http.Handler {
 	})
 }
 
-// @Summary      Evaluates formulas with an assignment of variables
+// @Summary      Evaluate formulas with an assignment of variables
 // @Description  Variables not in the assignment are assumed 'false'.  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Assignment
 // @Param        request body	sio.AssignmentInput true "Input formulas and variable assignment"
@@ -45,7 +45,7 @@ func handleEvaluation(w http.ResponseWriter, r *http.Request) {
 	sio.WriteBoolResult(w, r, assignment.Evaluate(fac, fac.And(fs...), ass))
 }
 
-// @Summary      Restricts formulas with an assignment of variables
+// @Summary      Restrict formulas with an assignment of variables
 // @Description  If a list of formulas is given, the result is computed for each formula independently.
 // @Tags         Assignment
 // @Param        request body	sio.AssignmentInput true "Input formulas and variable assignment"
