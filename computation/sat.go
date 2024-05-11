@@ -90,7 +90,59 @@ func HandleSatBackbone(cfg *config.Config) http.Handler {
 
 func HandleSatPredicate(cfg *config.Config) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch predicate := r.PathValue("pred"); predicate {
+		case "tautology":
+			HandleTautology(w, r, cfg)
+		case "contradiction":
+			HandleContradiction(w, r, cfg)
+		case "implication":
+			HandleImplication(w, r, cfg)
+		case "equivalence":
+			HandleEquivalence(w, r, cfg)
+		default:
+			sio.WriteError(w, r, sio.ErrUnknownPath(r.URL.Path))
+		}
 	})
+}
+
+// @Summary      Report whether a formula is a tautology
+// @Description  If a list of formulas is given it is reported of the conjunction of these formulas are a tautology.
+// @Tags         Solver
+// @Param        request body	sio.FormulaInput true "Input formulas"
+// @Success      200  {object}  sio.BoolResult
+// @Router       /solver/predicate/tautology [post]
+func HandleTautology(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
+	handleTautCont(w, r, cfg, true)
+}
+
+// @Summary      Report whether a formula is a contradiction
+// @Description  If a list of formulas is given it is reported of the conjunction of these formulas are a contradiction.
+// @Tags         Solver
+// @Param        request body	sio.FormulaInput true "Input formulas"
+// @Success      200  {object}  sio.BoolResult
+// @Router       /solver/predicate/contradiction [post]
+func HandleContradiction(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
+	handleTautCont(w, r, cfg, false)
+}
+
+// @Summary      Report whether the first formula implies the second formula
+// @Description  Must be called with exactly two formulas.
+// @Tags         Solver
+// @Param        request body	sio.FormulaInput true "Input formulas"
+// @Success      200  {object}  sio.BoolResult
+// @Router       /solver/predicate/implication [post]
+func HandleImplication(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
+	handleImplEquiv(w, r, cfg, true)
+}
+
+// @Summary      Report whether the first formula and the second formula are equivalent
+// @Description  Must be called with exactly two formulas.
+// @Tags         Solver
+// @Param        request body	sio.FormulaInput true "Input formulas"
+// @Success      200  {object}  sio.BoolResult
+// @Router       /solver/predicate/equivalence [post]
+func HandleEquivalence(w http.ResponseWriter, r *http.Request, cfg *config.Config) {
+	handleImplEquiv(w, r, cfg, false)
 }
 
 func fillSatSolver(w http.ResponseWriter, r *http.Request, solver *sat.Solver) ([]formula.Variable, bool) {
@@ -110,4 +162,50 @@ func fillSatSolver(w http.ResponseWriter, r *http.Request, solver *sat.Solver) (
 		solver.AddProposition(prop)
 	}
 	return varSet.Content(), true
+}
+
+func handleTautCont(w http.ResponseWriter, r *http.Request, cfg *config.Config, taut bool) {
+	fac := formula.NewFactory()
+	fs, ok := parseFormulaInput(w, r, fac)
+	if !ok {
+		return
+	}
+	solver := sat.NewSolver(fac)
+	if taut {
+		solver.Add(fac.Not(fac.And(fs...)))
+	} else {
+		solver.Add(fac.And(fs...))
+	}
+	hdl := sat.HandlerWithTimeout(*handler.NewTimeoutWithDuration(cfg.SyncComputationTimout))
+	result := solver.Call(sat.Params().Handler(hdl))
+	if result.Aborted() {
+		sio.WriteError(w, r, sio.ErrTimeout())
+	} else {
+		sio.WriteBoolResult(w, r, !result.Sat())
+	}
+}
+
+func handleImplEquiv(w http.ResponseWriter, r *http.Request, cfg *config.Config, impl bool) {
+	fac := formula.NewFactory()
+	fs, ok := parseFormulaInput(w, r, fac)
+	if !ok {
+		return
+	}
+	if len(fs) != 2 {
+		sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("method must be called with exactly two formulas")))
+		return
+	}
+	solver := sat.NewSolver(fac)
+	if impl {
+		solver.Add(fac.Not(fac.Implication(fs[0], fs[1])))
+	} else {
+		solver.Add(fac.Not(fac.Equivalence(fs[0], fs[1])))
+	}
+	hdl := sat.HandlerWithTimeout(*handler.NewTimeoutWithDuration(cfg.SyncComputationTimout))
+	result := solver.Call(sat.Params().Handler(hdl))
+	if result.Aborted() {
+		sio.WriteError(w, r, sio.ErrTimeout())
+	} else {
+		sio.WriteBoolResult(w, r, !result.Sat())
+	}
 }

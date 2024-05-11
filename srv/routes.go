@@ -28,7 +28,7 @@ func addRoutes(
 	mux.Handle("POST /simplification/{simp}", computation.HandleSimplification(cfg))
 	mux.Handle("POST /solver/maxsat", computation.HandleMaxSat(cfg))
 	mux.Handle("POST /solver/sat", computation.HandleSat(cfg))
-	mux.Handle("POST /solver/sat/predicate/{pred}", computation.HandleSatPredicate(cfg))
+	mux.Handle("POST /solver/predicate/{pred}", computation.HandleSatPredicate(cfg))
 	mux.Handle("POST /solver/backbone", computation.HandleSatBackbone(cfg))
 	mux.Handle("POST /substitution/{subst}", computation.HandleSubstitution(cfg))
 

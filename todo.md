@@ -19,7 +19,7 @@
   - [ ] enumeration
 - [ ] np
   - [ ] set cover
-- [ ] sat
-  - [x] solve with model / core
-  - [x] backbone
-  - [ ] predicates sat/tautology/contradiction/implies/equivalence
+
+# General
+- Solver Interface with state / serialization
+- Protobuf with real formulas ?

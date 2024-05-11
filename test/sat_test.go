@@ -138,3 +138,120 @@ func TestSatBackbone(t *testing.T) {
 `
 	assert.Equal(expected, body)
 }
+
+func TestTautology(t *testing.T) {
+	assert := assert.New(t)
+	ctx := runServer(t)
+	ep := endpoint("solver/predicate/tautology")
+	input := `
+    {
+      "formulas": [
+        {"formula": "~(A & B) => C | ~D"},
+        {"formula": "~A | E"},
+        {"formula": "A"}
+      ]
+    }
+    `
+	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, false)
+
+	input = `
+    {
+      "formulas": [
+        {"formula": "(A & X) | (~A & ~X) | (~A & X) | (A & ~X)"}
+      ]
+    }
+    `
+	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, true)
+}
+
+func TestContradiction(t *testing.T) {
+	assert := assert.New(t)
+	ctx := runServer(t)
+	ep := endpoint("solver/predicate/contradiction")
+	input := `
+    {
+      "formulas": [
+        {"formula": "~(A & B) => C | ~D"},
+        {"formula": "~A | E"},
+        {"formula": "A"}
+      ]
+    }
+    `
+	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, false)
+
+	input = `
+    {
+      "formulas": [
+        {"formula": "(A | X) & (~A | ~X)"},
+        {"formula": "(~A | X) & (A | ~X)"}
+      ]
+    }
+    `
+	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, true)
+}
+
+func TestImplication(t *testing.T) {
+	assert := assert.New(t)
+	ctx := runServer(t)
+	ep := endpoint("solver/predicate/implication")
+	input := `
+    {
+      "formulas": [
+        {"formula": "A & B"},
+        {"formula": "A & B & C"}
+      ]
+    }
+    `
+	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, false)
+
+	input = `
+    {
+      "formulas": [
+        {"formula": "A & B & C"},
+        {"formula": "A & B"}
+      ]
+    }
+    `
+	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, true)
+}
+
+func TestEquivalence(t *testing.T) {
+	assert := assert.New(t)
+	ctx := runServer(t)
+	ep := endpoint("solver/predicate/implication")
+	input := `
+    {
+      "formulas": [
+        {"formula": "A & B"},
+        {"formula": "A & B & C"}
+      ]
+    }
+    `
+	response, err := callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, false)
+
+	input = `
+    {
+      "formulas": [
+        {"formula": "A => C"},
+        {"formula": "~A | C"}
+      ]
+    }
+    `
+	response, err = callServiceJSON(ctx, http.MethodPost, ep, input)
+	assert.Nil(err)
+	validateJSONBoolResult(t, response, true)
+}
