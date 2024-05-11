@@ -24,6 +24,8 @@ func addRoutes(
 	mux.Handle("POST /graph/components", computation.HandleGraphComponents(cfg))
 	mux.Handle("POST /model/counting", computation.HandleModelCounting(cfg))
 	mux.Handle("POST /model/counting/projection", computation.HandleProjectedModelCounting(cfg))
+	mux.Handle("POST /model/enumeration", computation.HandleModelEnumeration(cfg))
+	mux.Handle("POST /model/enumeration/projection", computation.HandleProjectedModelEnumeration(cfg))
 	mux.Handle("POST /normalform/transformation/{nf}", computation.HandleNFTrans(cfg))
 	mux.Handle("POST /normalform/predicate/{nf}", computation.HandleNFPred(cfg))
 	mux.Handle("POST /prime/minimal-implicant", computation.HandleMinimalImplicant(cfg))

@@ -6,11 +6,6 @@
 - [ ] io
   - [ ] read dimacs
   - [ ] write dimacs
-- [ ] model
-  - [x] counting
-  - [ ] enumeration
-- [ ] np
-  - [ ] set cover
 
 # General
 - Solver Interface with state / serialization
