@@ -35,3 +35,7 @@ func WriteStringResult(w http.ResponseWriter, r *http.Request, value string) {
 	}
 	WriteResult(w, r, result)
 }
+
+func WriteStringResultAsText(w http.ResponseWriter, r *http.Request, value string) {
+	WriteTextResult(w, r, value)
+}

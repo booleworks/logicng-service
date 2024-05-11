@@ -60,6 +60,15 @@ func WriteResult[T ServiceOutput[T]](w http.ResponseWriter, r *http.Request, obj
 	}
 }
 
+func WriteTextResult(w http.ResponseWriter, r *http.Request, text string) {
+	w.Header().Add("Content-Type", "text/plain")
+	_, err := w.Write([]byte(text))
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Internal Server Error"))
+	}
+}
+
 func formatValidationErrors(errors map[string]string) string {
 	var sb strings.Builder
 	sb.WriteString("validation errors ")

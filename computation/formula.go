@@ -1,9 +1,11 @@
 package computation
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/booleworks/logicng-go/formula"
+	"github.com/booleworks/logicng-go/graphical"
 	"github.com/booleworks/logicng-service/config"
 	"github.com/booleworks/logicng-service/sio"
 )
@@ -27,8 +29,8 @@ func HandleFormula(cfg *config.Config) http.Handler {
 			handleFormulaVarProfile(w, r)
 		case "lit-profile":
 			handleFormulaLitProfile(w, r)
-		// case "dag-graph":
-		// case "ast-graph":
+		case "graph":
+			handleFormulaGraph(w, r)
 		default:
 			sio.WriteError(w, r, sio.ErrUnknownPath(r.URL.Path))
 		}
@@ -178,4 +180,44 @@ func handleFormulaLitProfile(w http.ResponseWriter, r *http.Request) {
 		profile[k.Sprint(fac)] = int64(v)
 	}
 	sio.WriteProfileResult(w, r, profile)
+}
+
+// @Summary      Compute a DAG or AST representation of formula
+// @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
+// @Tags         Formula
+// @Param        type query string  false "Graph type" Enums(ast, dag) Default(dag)
+// @Param        format query string  false "Output format" Enums(graphviz, mermaid) Default(mermaid)
+// @Param        request body	sio.FormulaInput true "Input formulas"
+// @Success      200  {string}  graph string
+// @Router       /formula/graph [post]
+func handleFormulaGraph(w http.ResponseWriter, r *http.Request) {
+	fac := formula.NewFactory()
+	fs, err := parseFormulaInput(w, r, fac)
+	if !err {
+		return
+	}
+	f := fac.And(fs...)
+
+	var representation *graphical.Representation
+	switch graphType := r.URL.Query().Get("type"); graphType {
+	case "dag", "":
+		representation = formula.GenerateGraphicalFormulaDAG(fac, f, formula.DefaultFormulaGraphicalGenerator())
+	case "ast":
+		representation = formula.GenerateGraphicalFormulaAST(fac, f, formula.DefaultFormulaGraphicalGenerator())
+	default:
+		sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("unknown graph type '%s'", graphType)))
+		return
+	}
+
+	var result string
+	switch format := r.URL.Query().Get("format"); format {
+	case "mermaid", "":
+		result = graphical.WriteMermaidToString(representation)
+	case "graphviz":
+		result = graphical.WriteDotToString(representation)
+	default:
+		sio.WriteError(w, r, sio.ErrIllegalInput(fmt.Errorf("unknown output format '%s'", format)))
+		return
+	}
+	sio.WriteStringResultAsText(w, r, result)
 }
