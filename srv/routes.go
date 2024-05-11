@@ -14,6 +14,8 @@ func addRoutes(
 	cfg *config.Config,
 ) {
 	mux.Handle("POST /assignment/{ass}", computation.HandleAssignment(cfg))
+	mux.Handle("POST /bdd/compilation", computation.HandleBDDCompilation(cfg))
+	mux.Handle("POST /bdd/graphical", computation.HandleBDDGraphical(cfg))
 	mux.Handle("POST /dnnf/compilation", computation.HandleDNNFCompilation(cfg))
 	mux.Handle("POST /encoding/{enc}", computation.HandleEncoding(cfg))
 	mux.Handle("POST /explanation/mus", computation.HandleMUS(cfg))

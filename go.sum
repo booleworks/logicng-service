@@ -28,6 +28,10 @@ github.com/booleworks/logicng-go v0.3.1-0.20240509103751-df33080ef1d4 h1:4dxRQ/r
 github.com/booleworks/logicng-go v0.3.1-0.20240509103751-df33080ef1d4/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
 github.com/booleworks/logicng-go v0.3.1-0.20240511084158-b1c245a6052c h1:gdvTgL8MWJVsF9xWjaLXVurXluRdreSBBsmWzm2CXdc=
 github.com/booleworks/logicng-go v0.3.1-0.20240511084158-b1c245a6052c/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
+github.com/booleworks/logicng-go v0.3.1-0.20240511132504-c80fa64cef55 h1:aRd/COk+k5I5+VPxZLtsIoccuttB0qXKpP4qWDM1+Sc=
+github.com/booleworks/logicng-go v0.3.1-0.20240511132504-c80fa64cef55/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
+github.com/booleworks/logicng-go v0.3.1-0.20240511133222-73d7c62dfa2a h1:EolpmyGNFTC7hLVrMU9vBeTt/JnHWKH6M+i3ndXC3XI=
+github.com/booleworks/logicng-go v0.3.1-0.20240511133222-73d7c62dfa2a/go.mod h1:csGlSXwcqT7dzaBd+pAZWMgy3FJH/2bio64VPqS2EhI=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/emirpasic/gods v1.18.1 h1:FXtiHYKDGKCW2KzwZKx0iC0PQmdlorYgdFG9jPXJ1Bc=
