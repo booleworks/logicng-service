@@ -1,0 +1,14 @@
+syntax = "proto3";
+package componentresult;
+import "generic.proto";
+import "formula.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message ComponentResult {
+    generic.ComputationState state = 1;
+    repeated Component components = 2;
+}
+
+message Component {
+    repeated formula.Formula formulas = 1;
+}

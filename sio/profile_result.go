@@ -12,12 +12,11 @@ type ProfileResult struct {
 	Profile map[string]int64 `json:"profile" example:"A:3,B:4"`
 }
 
-func (r ProfileResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.ProfileResult{
+func (r ProfileResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.ProfileResult{
 		State:   r.State.toPB(),
 		Profile: r.Profile,
 	})
-	return
 }
 
 func (ProfileResult) DeserProtoBuf(data []byte) (ProfileResult, error) {

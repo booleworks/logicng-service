@@ -12,12 +12,11 @@ type BoolResult struct {
 	Value bool             `json:"value"`
 }
 
-func (r BoolResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.BoolResult{
+func (r BoolResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.BoolResult{
 		State: r.State.toPB(),
 		Value: r.Value,
 	})
-	return
 }
 
 func (BoolResult) DeserProtoBuf(data []byte) (BoolResult, error) {

@@ -12,11 +12,10 @@ type StringSetResult struct {
 	Values []string         `json:"values" example:"A,B"`
 }
 
-func (r StringSetResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.StringSetResult{
+func (r StringSetResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.StringSetResult{
 		Value: r.Values,
 	})
-	return
 }
 
 func (StringSetResult) DeserProtoBuf(data []byte) (StringSetResult, error) {

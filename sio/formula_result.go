@@ -12,16 +12,15 @@ type FormulaResult struct {
 	Formulas []Formula        `json:"formulas,omitempty"`
 }
 
-func (r FormulaResult) ProtoBuf() (bin []byte, err error) {
+func (r FormulaResult) ProtoBuf() ([]byte, error) {
 	formulas := make([]*pb.Formula, len(r.Formulas))
 	for i, f := range r.Formulas {
 		formulas[i] = f.ProtoBuf()
 	}
-	bin, err = proto.Marshal(&pb.FormulaResult{
+	return proto.Marshal(&pb.FormulaResult{
 		State:    r.State.toPB(),
 		Formulas: formulas,
 	})
-	return
 }
 
 func (FormulaResult) DeserProtoBuf(data []byte) (FormulaResult, error) {

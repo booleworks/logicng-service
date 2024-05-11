@@ -29,7 +29,7 @@ func HandleFormula(cfg *config.Config) http.Handler {
 			handleFormulaVarProfile(w, r)
 		case "lit-profile":
 			handleFormulaLitProfile(w, r)
-		case "graph":
+		case "graphical":
 			handleFormulaGraph(w, r)
 		default:
 			sio.WriteError(w, r, sio.ErrUnknownPath(r.URL.Path))
@@ -182,14 +182,14 @@ func handleFormulaLitProfile(w http.ResponseWriter, r *http.Request) {
 	sio.WriteProfileResult(w, r, profile)
 }
 
-// @Summary      Compute a DAG or AST representation of formula
+// @Summary      Compute a graphical DAG or AST representation of formulas
 // @Description  If a list of formulas is given, the result refers to the conjunction of these formulas.
 // @Tags         Formula
 // @Param        type query string  false "Graph type" Enums(ast, dag) Default(dag)
 // @Param        format query string  false "Output format" Enums(graphviz, mermaid) Default(mermaid)
 // @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {string}  graph string
-// @Router       /formula/graph [post]
+// @Router       /formula/graphical [post]
 func handleFormulaGraph(w http.ResponseWriter, r *http.Request) {
 	fac := formula.NewFactory()
 	fs, err := parseFormulaInput(w, r, fac)

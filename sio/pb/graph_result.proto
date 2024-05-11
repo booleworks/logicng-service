@@ -1,0 +1,21 @@
+syntax = "proto3";
+package graphresult;
+import "generic.proto";
+option go_package = "github.com/booleworks/logicng-service/sio/pb";
+
+message GraphResult {
+    generic.ComputationState state = 1;
+    repeated Node nodes = 2;
+    repeated Edge edges = 3;
+}
+
+message Node {
+    int32 id = 1;
+    string label = 2;
+}
+
+message Edge {
+    int32 srcId = 1;
+    int32 destId = 2;
+    string label = 3;
+}

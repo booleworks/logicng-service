@@ -14,14 +14,13 @@ type MaxSatResult struct {
 	Model       []string         `json:"model,omitempty" example:"A, ~B"`
 }
 
-func (r MaxSatResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.MaxSatResult{
+func (r MaxSatResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.MaxSatResult{
 		State:       r.State.toPB(),
 		Satisfiable: r.Satisfiable,
 		Optimum:     r.Optimum,
 		Model:       r.Model,
 	})
-	return
 }
 
 func (MaxSatResult) DeserProtoBuf(data []byte) (MaxSatResult, error) {

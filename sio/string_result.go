@@ -12,12 +12,11 @@ type StringResult struct {
 	Value string           `json:"value"`
 }
 
-func (r StringResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.StringResult{
+func (r StringResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.StringResult{
 		State: r.State.toPB(),
 		Value: r.Value,
 	})
-	return
 }
 
 func (StringResult) DeserProtoBuf(data []byte) (StringResult, error) {

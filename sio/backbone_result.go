@@ -17,15 +17,14 @@ type BackboneResult struct {
 	Optional    []string         `json:"optional,omitempty" example:"X, Y"`
 }
 
-func (r BackboneResult) ProtoBuf() (bin []byte, err error) {
-	bin, err = proto.Marshal(&pb.BackboneResult{
+func (r BackboneResult) ProtoBuf() ([]byte, error) {
+	return proto.Marshal(&pb.BackboneResult{
 		State:       r.State.toPB(),
 		Satisfiable: r.Satisfiable,
 		Positive:    r.Positive,
 		Negative:    r.Negative,
 		Optional:    r.Optional,
 	})
-	return
 }
 
 func (BackboneResult) DeserProtoBuf(data []byte) (BackboneResult, error) {
