@@ -1,3 +1,9 @@
+<a href="https://www.logicng.org"><img src="https://github.com/booleworks/logicng-go/blob/main/doc/logos/logicng_logo_gopher.png?raw=true" alt="logo" width="400"></a>
+
+<a href="https://pkg.go.dev/github.com/booleworks/logicng-go"><img src="https://pkg.go.dev/badge/github.com/booleworks/logicng-go.svg" alt="Go Reference"></a>
+[![license](https://img.shields.io/badge/license-MIT-purple?style=flat-square)]()
+
+
 # LogicNG as a Service
 
 A web service based on LogicNG.
@@ -32,6 +38,10 @@ to start the server on host "hostname", port 9090, and a timeout of 20 seconds.
 
 A swagger documentation of all endpoints is available at `$host:$port/swagger` and should illustrate all available 
 algorithms and configuration parameters.
+
+<img src="https://github.com/booleworks/logicng-service/blob/main/assets/swagger.png?raw=true" alt="swagger" width="600">
+
+<img src="https://github.com/booleworks/logicng-service/blob/main/assets/swagger_detail.png?raw=true" alt="swagger details" width="600">
 
 ## Chaining
 
