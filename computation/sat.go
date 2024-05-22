@@ -14,7 +14,7 @@ import (
 // @Summary      Compute the satisfiability of a set of formulas with a SAT solver
 // @Description  If a list of formulas is given, the satisfiability is computed for the conjunction of these formulas.
 // @Tags         Solver
-// @Param        core query string  false "Compte an unsat core if unsatisfiable" Enums(false, true) Default(false)
+// @Param        core query string  false "Compute an unsat core if unsatisfiable" Enums(false, true) Default(false)
 // @Param        request body	sio.FormulaInput true "Input formulas"
 // @Success      200  {object}  sio.SatResult
 // @Router       /solver/sat [post]

@@ -44,7 +44,7 @@ func HandleFormula(cfg *config.Config) http.Handler {
 // @Success      200  {object}  sio.IntResult
 // @Router       /formula/depth [post]
 func handleFormulaDepth(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -59,7 +59,7 @@ func handleFormulaDepth(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.IntResult
 // @Router       /formula/atoms [post]
 func handleFormulaAtoms(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -74,7 +74,7 @@ func handleFormulaAtoms(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.IntResult
 // @Router       /formula/nodes [post]
 func handleFormulaNodes(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -89,7 +89,7 @@ func handleFormulaNodes(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.StringSetResult
 // @Router       /formula/variables [post]
 func handleFormulaVariables(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -109,7 +109,7 @@ func handleFormulaVariables(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.StringSetResult
 // @Router       /formula/literals [post]
 func handleFormulaLiterals(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -129,7 +129,7 @@ func handleFormulaLiterals(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.FormulaResult
 // @Router       /formula/sub-formulas [post]
 func handleFormulaSubFormulas(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -149,7 +149,7 @@ func handleFormulaSubFormulas(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.ProfileResult
 // @Router       /formula/var-profile [post]
 func handleFormulaVarProfile(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -169,7 +169,7 @@ func handleFormulaVarProfile(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  sio.ProfileResult
 // @Router       /formula/lit-profile [post]
 func handleFormulaLitProfile(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
@@ -191,7 +191,7 @@ func handleFormulaLitProfile(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {string}  graph string
 // @Router       /formula/graphical [post]
 func handleFormulaGraph(w http.ResponseWriter, r *http.Request) {
-	fac := formula.NewFactory()
+	fac := formula.NewFactory(true)
 	fs, err := parseFormulaInput(w, r, fac)
 	if !err {
 		return
