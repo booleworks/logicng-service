@@ -1,0 +1,41 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: |
+          env GOOS=darwin GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-macos-arm main.go
+          env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-amd main.go
+          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux main.go
+          env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
+      - name: Build and Push Docker Image
+        run: |
+          docker build . -t ghcr.io/booleworks/logicng-service:${{ github.ref }}
+          docker push ghcr.io/booleworks/logicng-service:${{ github.ref }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            logicng-service-macos-arm
+            logicng-service-macos-amd
+            logicng-service-linux
+            logicng-service-win.exe
