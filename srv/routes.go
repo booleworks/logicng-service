@@ -45,7 +45,4 @@ func addRoutes(
 	mux.HandleFunc("GET /swagger/*",
 		httpSwagger.Handler(httpSwagger.URL(
 			fmt.Sprintf("http://%s:%s/swagger/doc.json", cfg.Host, cfg.Port))))
-
-	mux.HandleFunc("/docs",
-		func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "static/redoc.html") })
 }
