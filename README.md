@@ -8,7 +8,7 @@
 
 A web service based on LogicNG.
 
-It exposes 50 LogicNG functions as REST Web Services, among them
+It exposes over 50 LogicNG functions as REST Web Services, among them
 - SAT Solver
 - MaxSAT Solver
 - BDD Compilation
@@ -43,11 +43,72 @@ algorithms and configuration parameters.
 
 <img src="https://github.com/booleworks/logicng-service/blob/main/assets/swagger_detail.png?raw=true" alt="swagger details" width="600">
 
+## Functions
+
+| Method   | Endpoint                         | Input               | Output            | Query Params                         |
+| -------  | -------------------------------- | ------------------- | ----------------- | ------------------------------------ |
+| `POST`   | `assignment/evaluation`          | `AssignmentInput`   | `BoolResult`      | -                                    |
+| `POST`   | `assignment/restriction`         | `AssignmentInput`   | `FormulaResult`   | -                                    |
+| `POST`   | `bdd/compilation`                | `FormulaInput`      | `GraphResult`     | Variable Ordering                    |
+| `POST`   | `bdd/graphical`                  | `FormulaInput`      | `String`          | Variable Ordering, Graph Format      |
+| `POST`   | `dnnf/compilation`               | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `encoding/cc`                    | `FormulaInput`      | `FormulaResult`   | Encoding Algorithm                   |
+| `POST`   | `encoding/pbc`                   | `FormulaInput`      | `FormulaResult`   | Encoding Algorithm                   |
+| `POST`   | `explanation/mus`                | `FormulaInput`      | `FormulaResult`   | MUS Algorithm                        |
+| `POST`   | `explanation/smus`               | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `formula/atoms`                  | `FormulaInput`      | `IntResult`       | -                                    |
+| `POST`   | `formula/depth`                  | `FormulaInput`      | `IntResult`       | -                                    |
+| `POST`   | `formula/graphical`              | `FormulaInput`      | `String`          | Graph Type, Graph Format             |
+| `POST`   | `formula/lit-profile`            | `FormulaInput`      | `ProfileResult`   | -                                    |
+| `POST`   | `formula/literals`               | `FormulaInput`      | `StringSetResult` | -                                    |
+| `POST`   | `formula/nodes`                  | `FormulaInput`      | `IntResult`       | -                                    |
+| `POST`   | `formula/sub-formulas`           | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `formula/var-profile`            | `FormulaInput`      | `ProfileResult`   | -                                    |
+| `POST`   | `formula/variables`              | `FormulaInput`      | `StringSetResult` | -                                    |
+| `POST`   | `graph/components`               | `FormulaInput`      | `ComponentResult` | -                                    |
+| `POST`   | `graph/constraint`               | `FormulaInput`      | `GraphResult`     | -                                    |
+| `POST`   | `graph/constraint/graphical`     | `FormulaInput`      | `String`          | Graph Format                         |
+| `POST`   | `model/counting`                 | `FormulaInput`      | `StringResult`    | Counting Algorithm                   |
+| `POST`   | `model/counting/projection`      | `FormulaVarsInput`  | `StringResult`    | Counting Algorithm                   |
+| `POST`   | `model/enumeration`              | `FormulaInput`      | `FormulaResult`   | Enumeration Algorithm                |
+| `POST`   | `model/enumeration/projection`   | `FormulaVarsInput`  | `FormulaResult`   | Enumeration Algorithm                |
+| `POST`   | `normalform/predicate/nnf`       | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/predicate/cnf`       | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/predicate/dnf`       | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/predicate/aig`       | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/predicate/minterm`   | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/predicate/maxterm`   | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `normalform/transformation/aig`  | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `normalform/transformation/cnf`  | `FormulaInput`      | `FormulaResult`   | CNF Algorithm                        |
+| `POST`   | `normalform/transformation/dnf`  | `FormulaInput`      | `FormulaResult`   | DNF Algorithm                        |
+| `POST`   | `normalform/transformation/nnf`  | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `prime/minimal-cover`            | `FormulaInput`      | `FormulaResult`   | Min or Max Models                    |
+| `POST`   | `prime/minimal-implicant`        | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `GET`    | `randomizer`                     | -                   | `FormulaResult`   | Seed, Depth, Vars, Formulas          |
+| `POST`   | `simplification/advanced`        | `FormulaInput`      | `FormulaResult`   | Backbone, Factor Out, Negation Flags |
+| `POST`   | `simplification/backbone`        | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/distribution`    | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/factorout`       | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/negation`        | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/qmc`             | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/subsumption`     | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `simplification/unitpropagation` | `FormulaInput`      | `FormulaResult`   | -                                    |
+| `POST`   | `solver/backbone`                | `FormulaInput`      | `BackboneResult`  | -                                    |
+| `POST`   | `solver/maxsat`                  | `MaxSatInput`       | `MaxSatResult`    | MaxSAT Algorithm                     |
+| `POST`   | `solver/predicate/contradiction` | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `solver/predicate/equivalence`   | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `solver/predicate/implication`   | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `solver/predicate/tautology`     | `FormulaInput`      | `BoolResult`      | -                                    |
+| `POST`   | `solver/sat`                     | `FormulaInput`      | `SatResult`       | UNSAT Core Flag                      |
+| `POST`   | `substitution/anonymization`     | `FormulaInput`      | `FormulaResult`   | Variable Prefix                      |
+| `POST`   | `substitution/variables`         | `SubstitutionInput` | `FormulaResult`   | -                                    | 
+
 ## Chaining
 
 The API is designed in a way, that the output of many of the endpoints can be used as input to many other endpoints.
 So e.g. you can simply pass a set of formulas, substitute some variables, anonymize the formula, compute a normal form,
-and generate a Mermaid.js visualization of the resulting formula without ever manipulating the input/output.
+and generate a Mermaid.js visualization of the resulting formula without ever manipulating the input/output.  In the table 
+above this means that you always can use a `FormulaResult` from one endpoint directly as `FormulaInput` for another endpoint.
 
 ## Disclaimer
 
