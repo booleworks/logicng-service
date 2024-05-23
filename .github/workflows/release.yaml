@@ -23,6 +23,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: |
+          go install github.com/swaggo/swag/cmd/swag@latest
+          swag init
           env GOOS=darwin GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-macos-arm main.go
           env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-amd main.go
           env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux main.go
