@@ -23,7 +23,7 @@ import (
 // @license.name MIT
 // @license.url https://opensource.org/license/mit
 func main() {
-	host := flag.String("host", "localhost", "hostname of the service")
+	host := flag.String("host", "", "hostname of the service")
 	port := flag.String("port", "8080", "port of the service")
 	timeout := flag.String("timeout", "5s", "timeout of sync calls as duration")
 	flag.Parse()

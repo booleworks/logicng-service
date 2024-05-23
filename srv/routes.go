@@ -43,6 +43,5 @@ func addRoutes(
 
 	// Docs
 	mux.HandleFunc("GET /swagger/*",
-		httpSwagger.Handler(httpSwagger.URL(
-			fmt.Sprintf("http://%s:%s/swagger/doc.json", cfg.Host, cfg.Port))))
+		httpSwagger.Handler(httpSwagger.URL(fmt.Sprintf("http://localhost:%s/swagger/doc.json", cfg.Port))))
 }
