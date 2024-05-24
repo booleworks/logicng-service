@@ -57,6 +57,7 @@ jobs:
         with:
           files: |
             logicng-service-macos-arm
-            logicng-service-macos-amd
-            logicng-service-linux
+            logicng-service-macos-intel
+            logicng-service-linux-arm64
+            logicng-service-linux-amd64
             logicng-service-win.exe
