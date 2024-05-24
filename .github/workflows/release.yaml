@@ -3,7 +3,7 @@ name: Create Release
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "test-*.*.*"
 
 jobs:
   release:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set Tag Name
-        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/test-}" >> $GITHUB_ENV
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -31,33 +31,21 @@ jobs:
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
           swag init
-          env GOOS=darwin GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-macos-arm main.go
-          env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-intel main.go
           env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
           env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
-          env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
-      - name: Build and Push AMD64 Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
-          platforms: linux/amd64
-          build-args: PLATFORM=linux-amd64
       - name: Build and Push ARM64 Image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
+          tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
           platforms: linux/arm64
           build-args: PLATFORM=linux-arm64
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Build and Push AMD64 Image
+        uses: docker/build-push-action@v5
         with:
-          files: |
-            logicng-service-macos-arm
-            logicng-service-macos-intel
-            logicng-service-linux-arm64
-            logicng-service-linux-amd64
-            logicng-service-win.exe
+          context: .
+          push: true
+          tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
+          platforms: linux/amd64
+          build-args: PLATFORM=linux-amd64
