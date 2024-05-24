@@ -36,22 +36,15 @@ jobs:
           env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
           env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
           env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
-      - name: Build and Push AMD64 Image
+          mkdir -p build/linux/amd64 && cp logicng-service-linux-amd64 build/linux/amd64/logicng-service
+          mkdir -p build/linux/arm64 && cp logicng-service-linux-arm64 build/linux/arm64/logicng-service
+      - name: Build and Push Images
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
-          platforms: linux/amd64
-          build-args: PLATFORM=linux-amd64
-      - name: Build and Push ARM64 Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
-          platforms: linux/arm64
-          build-args: PLATFORM=linux-arm64
+          tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
+          platforms: linux/arm64,linux/amd64
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
