@@ -22,6 +22,8 @@ Many of the algorithms can be parametrized via query parameters.  Input/Output c
 
 ## Usage
 
+## Compile it yourself
+
 Run the service with a simple
 
 ```bash
@@ -35,6 +37,17 @@ parameters with
 go run main.go -host "hostname" -port 9090 -timeout "20s"
 ```
 to start the server on host "hostname", port 9090, and a timeout of 20 seconds.
+
+## Use the binary
+You can just download a binary under [releases](https://github.com/booleworks/logicng-service/releases) and you should be ready to go.
+
+## Docker
+... or just use docker
+```bash
+docker run -p 8080:8080 ghcr.io/booleworks/logicng-service:0.0.1
+```
+
+## Swagger
 
 A swagger documentation of all endpoints is available at `$host:$port/swagger` and should illustrate all available 
 algorithms and configuration parameters.
