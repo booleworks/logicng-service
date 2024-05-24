@@ -11,10 +11,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set Tag Name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: 1.22.1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -26,13 +32,26 @@ jobs:
           go install github.com/swaggo/swag/cmd/swag@latest
           swag init
           env GOOS=darwin GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-macos-arm main.go
-          env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-amd main.go
-          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux main.go
+          env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-intel main.go
+          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
+          env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
           env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
-      - name: Build and Push Docker Image
-        run: |
-          docker build . -t ghcr.io/booleworks/logicng-service:$(echo ${{ github.ref }} | cut -c 12-)
-          docker push ghcr.io/booleworks/logicng-service:$(echo ${{ github.ref }} | cut -c 12-)
+      - name: Build and Push AMD64 Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
+          platforms: linux/amd64
+          build-args: PLATFORM=linux-amd64
+      - name: Build and Push ARM64 Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
+          platforms: linux/arm64
+          build-args: PLATFORM=linux-arm64
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
