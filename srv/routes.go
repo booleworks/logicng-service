@@ -1,7 +1,6 @@
 package srv
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/booleworks/logicng-service/computation"
@@ -42,6 +41,5 @@ func addRoutes(
 	mux.Handle("GET /randomizer/{rand}", computation.HandleRandomizer(cfg))
 
 	// Docs
-	mux.HandleFunc("GET /swagger/*",
-		httpSwagger.Handler(httpSwagger.URL(fmt.Sprintf("http://localhost:%s/swagger/doc.json", cfg.Port))))
+	mux.HandleFunc("GET /swagger/*", httpSwagger.Handler(httpSwagger.URL("doc.json")))
 }
