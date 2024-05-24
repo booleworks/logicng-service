@@ -31,21 +31,12 @@ jobs:
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
           swag init
-          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
-          env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
-      - name: Build and Push ARM64 Image
+          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o build/linux/amd64/logicng-service main.go
+          env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o build/linux/arm64/logicng-service main.go
+      - name: Build and Push Images
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
-          platforms: linux/arm64
-          build-args: PLATFORM=linux-arm64
-      - name: Build and Push AMD64 Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
-          platforms: linux/amd64
-          build-args: PLATFORM=linux-amd64
+          platforms: linux/arm64,linux/amd64
