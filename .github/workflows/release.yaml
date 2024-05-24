@@ -43,7 +43,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/booleworks/logicng-service-test:${{ ENV.TAG_NAME }}
+          tags: ghcr.io/booleworks/logicng-service:${{ ENV.TAG_NAME }}
           platforms: linux/arm64,linux/amd64
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
