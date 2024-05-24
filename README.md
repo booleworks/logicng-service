@@ -24,6 +24,12 @@ Many of the algorithms can be parametrized via query parameters.  Input/Output c
 
 ## Compile it yourself
 
+Install and initialize `swag` (required for generating the Swagger UI)
+```bash
+go install github.com/swaggo/swag/cmd/swag@latest
+swag init
+```
+
 Run the service with a simple
 
 ```bash
