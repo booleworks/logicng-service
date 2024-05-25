@@ -16,7 +16,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.1
+          go-version: 1.22.3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -31,8 +31,11 @@ jobs:
         run: |
           go install github.com/swaggo/swag/cmd/swag@latest
           swag init
-          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o build/linux/amd64/logicng-service main.go
-          env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o build/linux/arm64/logicng-service main.go
+          env GOOS=darwin GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-macos-arm main.go
+          env GOOS=darwin GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-macos-intel main.go
+          env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
+          env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
+          env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
       - name: Build and Push Images
         uses: docker/build-push-action@v5
         with:
