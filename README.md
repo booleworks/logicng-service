@@ -50,7 +50,7 @@ You can just download a binary under [releases](https://github.com/booleworks/lo
 ## Docker
 ... or just use docker
 ```bash
-docker run -p 8080:8080 ghcr.io/booleworks/logicng-service:0.0.2
+docker run -it -p 8080:8080 ghcr.io/booleworks/logicng-service:0.0.3
 ```
 
 ## Swagger
