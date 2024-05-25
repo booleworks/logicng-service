@@ -16,7 +16,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.22.1
+          go-version: 1.22.3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -36,8 +36,6 @@ jobs:
           env GOOS=linux GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-linux-amd64 main.go
           env GOOS=linux GOARCH=arm64 go build -ldflags "-w -s" -o logicng-service-linux-arm64 main.go
           env GOOS=windows GOARCH=amd64 go build -ldflags "-w -s" -o logicng-service-win.exe main.go
-          mkdir -p build/linux/amd64 && cp logicng-service-linux-amd64 build/linux/amd64/logicng-service
-          mkdir -p build/linux/arm64 && cp logicng-service-linux-arm64 build/linux/arm64/logicng-service
       - name: Build and Push Images
         uses: docker/build-push-action@v5
         with:
