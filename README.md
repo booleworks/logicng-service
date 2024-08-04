@@ -135,3 +135,8 @@ This is a funny little side project for playing around with Go Web Services (Sta
 It is by no means a production-ready piece of software with bells and whistles.  But if you just need some logical 
 computations and don't want to integrate LogicNG in Go/Rust/Java in you project - perhaps it's for you :)
 
+## Funding
+
+LogicNG development is partly funded by the [SofDCar project](https://sofdcar.de/):
+
+<a href="https://www.sofdcar.de"><img src="https://github.com/booleworks/logicng-core/blob/main/doc/logo/bmwk.png" alt="logo" width="200"></a>
